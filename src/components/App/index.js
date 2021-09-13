@@ -7,14 +7,25 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Header from '../Header';
 
+import homeSlide from '../../assets/images/home-slide.jpg';
+
 function App() {
+  const styles = {
+    container: {
+      backgroundImage: `url(${homeSlide})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    },
+  };
+
   return (
     <>
       <Header />
       <Box
+        style={styles.container}
         sx={{
           bgcolor: 'primary.dark',
-          height: '40vh',
+          height: '70vh',
           // position: 'absolute',
           // top: '0',
           width: '100%',
