@@ -11,9 +11,18 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Masonry from '@mui/lab/Masonry';
+import MasonryItem from '@mui/lab/MasonryItem';
 
 // MATERIAL ICONS
 import EqualizerIcon from '@mui/icons-material/Equalizer';
+
+// IMAGES IMPORTS
+import roundnetMasonry1 from '../../assets/images/ranking-masonry/roundnet-france-ranking1.jpg';
+import roundnetMasonry3 from '../../assets/images/ranking-masonry/roundnet-france-ranking3.jpg';
+import roundnetMasonry4 from '../../assets/images/ranking-masonry/roundnet-france-ranking4.jpg';
+import roundnetMasonry6 from '../../assets/images/ranking-masonry/roundnet-france-ranking6.jpg';
 
 function Ranking() {
   const rows = [
@@ -49,8 +58,35 @@ function Ranking() {
     },
   ];
 
+  const itemData = [
+    {
+      img: roundnetMasonry1,
+      title: 'Fern',
+    },
+    // {
+    //   img: roundnetMasonry2,
+    //   title: 'Snacks',
+    // },
+    {
+      img: roundnetMasonry3,
+      title: 'Mushrooms',
+    },
+    {
+      img: roundnetMasonry4,
+      title: 'Tower',
+    },
+    // {
+    //   img: roundnetMasonry5,
+    //   title: 'Sea star',
+    // },
+    {
+      img: roundnetMasonry6,
+      title: 'Honey',
+    },
+  ];
+
   return (
-    <Container id="ranking" maxWidth="sm" sx={{ position: 'relative', mb: 8 }}>
+    <Container id="ranking" maxWidth="lg" sx={{ position: 'relative', mb: 8 }}>
 
       <Typography
         variant="h4"
@@ -63,31 +99,46 @@ function Ranking() {
         </Box>
         Le classement
       </Typography>
-      <TableContainer component={Paper} elevation={6}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Rang</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Joueur.se</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', fontSize: '1.1rem' }} align="right">Points</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row, index) => (
-              <TableRow
-                key={row.player}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:nth-child(odd)': { background: '#c5cef0' } }}
-              >
-                <TableCell component="th" scope="row">
-                  {index + 1}
-                </TableCell>
-                <TableCell>{row.player}</TableCell>
-                <TableCell sx={{ fontWeight: 'bold' }} align="right">{row.points}</TableCell>
+      <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems="center">
+        <TableContainer component={Paper} variant="outlined" sx={{ width: { xs: '100%', md: '50%' } }}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Rang</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Joueur.se</TableCell>
+                <TableCell sx={{ fontWeight: 'bold', fontSize: '1.1rem' }} align="right">Points</TableCell>
               </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row, index) => (
+                <TableRow
+                  key={row.player}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:nth-of-type(odd)': { background: '#c5cef0' } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {index + 1}
+                  </TableCell>
+                  <TableCell>{row.player}</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold' }} align="right">{row.points}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <Box sx={{ width: { xs: '100%', md: '50%' } }}>
+          <Masonry columns={2} spacing={1}>
+            {itemData.map((item) => (
+              <MasonryItem key={item.img}>
+                <img
+                  src={item.img}
+                  srcSet={item.img}
+                  alt={item.title}
+                />
+              </MasonryItem>
             ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          </Masonry>
+        </Box>
+      </Stack>
     </Container>
   );
 }

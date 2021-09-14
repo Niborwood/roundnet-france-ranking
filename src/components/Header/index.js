@@ -43,7 +43,7 @@ function Header(props) {
             <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
               Roundnet France Ranking
             </Typography>
-            <ButtonGroup variant="text" sx={{ display: { xs: 'none', sm: 'block' } }}>
+            <ButtonGroup variant="text" sx={{ display: { xs: 'none', md: 'block' } }}>
               <Button href="#who-are-we" color="inherit">Qui sommes-nous</Button>
               <Button href="#methods" color="inherit">Méthodologie</Button>
               <Button href="#ranking" color="inherit">Classement</Button>

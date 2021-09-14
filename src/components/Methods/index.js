@@ -21,6 +21,7 @@ function Methods() {
       </Box>
       <Box sx={{
         background: 'linear-gradient(180deg, rgba(245,0,87,1) 0%, rgba(171,0,60,1) 100%);',
+        pb: 8,
       }}
       >
         <Container maxWidth="lg">

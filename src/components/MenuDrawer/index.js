@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import IconButton from '@mui/material/IconButton';
 import Drawer from '@mui/material/Drawer';
+import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -21,9 +22,16 @@ function MenuDrawer() {
 
   const list = () => (
     <>
-      <Typography variant="h5" gutterBottom sx={{ mt: 2, ml: 2 }}>Roundnet France Ranking</Typography>
+      <Typography color="primary" variant="h5" gutterBottom sx={{ mt: 2, ml: 2, mb: 2 }}>
+        Roundnet France
+        {' '}
+        <br />
+        {' '}
+        Ranking
+      </Typography>
+      <Divider />
       <List sx={{ p: 2, width: { xs: '75vw', sm: '50vw' } }}>
-        <ListItem disablePadding>
+        <ListItem>
           <ListItemButton>
             <ListItemIcon>
               <SupervisedUserCircleRoundedIcon />
@@ -31,7 +39,7 @@ function MenuDrawer() {
             <ListItemText primary="Qui sommes-nous" />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
+        <ListItem>
           <ListItemButton>
             <ListItemIcon>
               <HelpRoundedIcon />
@@ -39,7 +47,7 @@ function MenuDrawer() {
             <ListItemText primary="Méthodologie" />
           </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
+        <ListItem>
           <ListItemButton>
             <ListItemIcon>
               <StarRoundedIcon />
@@ -59,7 +67,7 @@ function MenuDrawer() {
         edge="start"
         color="inherit"
         aria-label="menu"
-        sx={{ mr: 2, display: { xs: 'block', sm: 'none' } }}
+        sx={{ mr: 2, display: { xs: 'block', md: 'none' } }}
       >
         <MenuIcon />
       </IconButton>

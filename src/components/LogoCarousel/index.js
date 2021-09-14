@@ -64,6 +64,7 @@ function LogoCarousel() {
       </Box>
       <Slider
         dots
+        arrows={false}
         autoplay
         infinite
         speed={800}
