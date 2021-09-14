@@ -3,17 +3,19 @@ import React from 'react';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { DataGrid } from '@material-ui/data-grid';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+
+// MATERIAL ICONS
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 
 function Ranking() {
-  const columns = [
-    { field: 'id', headerName: 'Rang', width: 70 },
-    { field: 'player', headerName: 'Joueur', width: 130 },
-    {
-      field: 'points', headerName: 'Points', type: 'number', width: 130,
-    },
-  ];
-
   const rows = [
     {
       id: 1, player: 'Louis Jouve', points: 870,
@@ -48,18 +50,44 @@ function Ranking() {
   ];
 
   return (
-    <Container id="ranking" maxWidth="sm" sx={{ position: 'relative' }}>
+    <Container id="ranking" maxWidth="sm" sx={{ position: 'relative', mb: 8 }}>
+
       <Typography
         variant="h4"
         align="center"
         color="primary"
         m={8}
       >
+        <Box textAlign="center">
+          <EqualizerIcon color="primary" sx={{ fontSize: 80 }} />
+        </Box>
         Le classement
       </Typography>
-      <div style={{ height: 300, width: '100%' }}>
-        <DataGrid rows={rows} columns={columns} />
-      </div>
+      <TableContainer component={Paper} elevation={6}>
+        <Table aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Rang</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Joueur.se</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: '1.1rem' }} align="right">Points</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row, index) => (
+              <TableRow
+                key={row.player}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:nth-child(odd)': { background: '#c5cef0' } }}
+              >
+                <TableCell component="th" scope="row">
+                  {index + 1}
+                </TableCell>
+                <TableCell>{row.player}</TableCell>
+                <TableCell sx={{ fontWeight: 'bold' }} align="right">{row.points}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Container>
   );
 }

@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 
 // MATERIAL UI ICONS
-import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 
 function WhoAreWe() {
   return (
@@ -23,7 +23,7 @@ function WhoAreWe() {
         }}
       >
         <Box textAlign="center">
-          <SupervisedUserCircleIcon color="primary" fontSize="large" />
+          <LiveHelpIcon color="primary" sx={{ fontSize: 80 }} />
         </Box>
         <Box mb={3}>
           <Typography align="center" variant="h4">

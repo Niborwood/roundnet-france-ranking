@@ -60,7 +60,7 @@ function LogoCarousel() {
       }}
     >
       <Box mb={2}>
-        <Typography align="center" variant="h5" component="h2"> Les associations nous utilisent </Typography>
+        <Typography align="center" variant="h5" component="h2"> Application officielle du roundnet français </Typography>
       </Box>
       <Slider
         dots

@@ -14,10 +14,15 @@ const muiTheme = createTheme({
   palette: {
     type: 'dark',
     primary: {
+      light: '#778edc',
       main: '#315bcd',
+      dark: '#1e48b6',
+      analogous: '#31a9cd',
     },
     secondary: {
+      light: '#fb5d89',
       main: '#f50057',
+      dark: '#cf0051',
     },
   },
 });

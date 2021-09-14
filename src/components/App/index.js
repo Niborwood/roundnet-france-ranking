@@ -16,7 +16,7 @@ function App() {
       <WhoAreWe />
       <LogoCarousel />
       <Methods />
-      {/* <Ranking /> */}
+      <Ranking />
     </div>
   );
 }

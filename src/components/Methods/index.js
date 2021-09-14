@@ -7,6 +7,9 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container';
 
+// MATERIAL ICONS
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
+
 function Methods() {
   return (
     <div id="methods">
@@ -21,6 +24,9 @@ function Methods() {
       }}
       >
         <Container maxWidth="lg">
+          <Box textAlign="center">
+            <QueryStatsIcon color="disabled" sx={{ fontSize: 80 }} />
+          </Box>
           <Typography mb={8} align="center" color="white" variant="h4" component="h2">Méthodologie &amp; Critères</Typography>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
