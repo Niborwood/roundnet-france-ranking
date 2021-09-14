@@ -46,7 +46,7 @@ function Header(props) {
             <ButtonGroup variant="text" sx={{ display: { xs: 'none', sm: 'block' } }}>
               <Button href="#who-are-we" color="inherit">Qui sommes-nous</Button>
               <Button href="#methods" color="inherit">Méthodologie</Button>
-              <Button href="#classement" color="inherit">Classement</Button>
+              <Button href="#ranking" color="inherit">Classement</Button>
             </ButtonGroup>
           </Toolbar>
         </AppBar>

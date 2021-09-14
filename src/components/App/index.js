@@ -6,6 +6,7 @@ import HomeIntro from '../HomeIntro';
 import WhoAreWe from '../WhoAreWe';
 import LogoCarousel from '../LogoCarousel';
 import Methods from '../Methods';
+import Ranking from '../Ranking';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <WhoAreWe />
       <LogoCarousel />
       <Methods />
+      {/* <Ranking /> */}
     </div>
   );
 }
