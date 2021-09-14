@@ -4,6 +4,8 @@ import React from 'react';
 import Header from '../Header';
 import HomeIntro from '../HomeIntro';
 import WhoAreWe from '../WhoAreWe';
+import LogoCarousel from '../LogoCarousel';
+import Methods from '../Methods';
 
 function App() {
   return (
@@ -11,6 +13,8 @@ function App() {
       <Header />
       <HomeIntro />
       <WhoAreWe />
+      <LogoCarousel />
+      <Methods />
     </div>
   );
 }
