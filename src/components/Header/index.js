@@ -21,7 +21,7 @@ function Header() {
             Roundnet France Ranking
           </Typography>
           <ButtonGroup variant="text" sx={{ display: { xs: 'none', sm: 'block' } }}>
-            <Button href="#qui-sommes-nous" color="inherit">Qui sommes-nous</Button>
+            <Button href="#who-are-we" color="inherit">Qui sommes-nous</Button>
             <Button href="#methodologie" color="inherit">Méthodologie</Button>
             <Button href="#classement" color="inherit">Classement</Button>
           </ButtonGroup>
