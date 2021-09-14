@@ -39,16 +39,15 @@ function WhoAreWe() {
         <Divider variant="middle" />
         <Stack spacing={2} mt={4}>
           <Typography align="center" variant="body1" component="div">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-            Quibusdam ipsam eaque asperiores.
-            Repudiandae, id aliquam placeat sed quo assumenda similique?
-            Cupiditate dolore ipsum et ratione, minus suscipit! Quia, sed minima.
+            Le classement officiel de roundnet est créé et géré par Roundnet France.
+            Il permet d&apos;agréger les différents résultats officiels des joueurs et
+            constitue la base pour le seeding des tournois officiels.
           </Typography>
           <Typography align="center" variant="body1" component="div">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-            Quibusdam ipsam eaque asperiores.
-            Repudiandae, id aliquam placeat sed quo assumenda similique?
-            Cupiditate dolore ipsum et ratione, minus suscipit! Quia, sed minima.
+            Il sert de seeding pour les championnats de France
+            et les différents tournois français.
+            Enfin, il sert à structurer notre communauté,
+            et à la motiver pour participer à un maximum de tournois !
           </Typography>
         </Stack>
       </Paper>
