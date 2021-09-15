@@ -8,6 +8,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
 
 // MATERIAL ICONS
 import MenuIcon from '@mui/icons-material/Menu';
@@ -16,13 +18,22 @@ import HelpRoundedIcon from '@mui/icons-material/HelpRounded';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import { Typography } from '@mui/material';
 
+import logoFrance from '../../assets/images/logos/roundnet-france.jpg';
+
 function MenuDrawer() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
 
   const list = () => (
-    <>
-      <Typography color="primary" variant="h5" gutterBottom sx={{ mt: 2, ml: 2, mb: 2 }}>
+    <Box>
+      <Typography
+        color="primary"
+        variant="h5"
+        gutterBottom
+        sx={{
+          mt: 2, ml: 2, mb: 2,
+        }}
+      >
         Roundnet France
         {' '}
         <br />
@@ -32,31 +43,48 @@ function MenuDrawer() {
       <Divider />
       <List sx={{ p: 2, width: { xs: '75vw', sm: '50vw' } }}>
         <ListItem>
-          <ListItemButton>
+          <ListItemButton disableGutters onClick={toggleDrawer}>
             <ListItemIcon>
-              <SupervisedUserCircleRoundedIcon />
+              <SupervisedUserCircleRoundedIcon color="primary" fontSize="medium" />
             </ListItemIcon>
-            <ListItemText primary="Qui sommes-nous" />
+            <ListItemText>
+              <Link href="#who-are-we">Qui sommes-nous</Link>
+            </ListItemText>
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton>
+          <ListItemButton disableGutters onClick={toggleDrawer}>
             <ListItemIcon>
-              <HelpRoundedIcon />
+              <HelpRoundedIcon color="primary" fontSize="medium" />
             </ListItemIcon>
-            <ListItemText primary="Méthodologie" />
+            <ListItemText>
+              <Link href="#methods">Méthodologie</Link>
+            </ListItemText>
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton>
+          <ListItemButton disableGutters onClick={toggleDrawer}>
             <ListItemIcon>
-              <StarRoundedIcon />
+              <StarRoundedIcon color="primary" fontSize="medium" />
             </ListItemIcon>
-            <ListItemText primary="Classement" />
+            <ListItemText>
+              <Link href="#ranking">Classement</Link>
+            </ListItemText>
           </ListItemButton>
         </ListItem>
       </List>
-    </>
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 0,
+          left: '4rem',
+          opacity: 1,
+        }}
+      >
+        <img src={logoFrance} alt="Roundnet France Ranking" />
+
+      </Box>
+    </Box>
   );
 
   return (
