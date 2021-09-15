@@ -6,6 +6,7 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
 
 // MATERIAL ICONS
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
@@ -29,15 +30,13 @@ function Methods() {
             <QueryStatsIcon color="disabled" sx={{ fontSize: 80 }} />
           </Box>
           <Typography mb={8} align="center" color="white" variant="h4" component="h2">Méthodologie &amp; Critères</Typography>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            alignItems={{ xs: 'center', sm: 'stretch' }}
-            justifyContent="space-around"
+          <Grid
+            container
             spacing={2}
-            sx={{ p: 4 }}
           >
 
-            <Paper sx={{ p: 2, width: '100%' }}>
+            {/* PAPER 1 */}
+            <Grid item xs={12} sm={5} sx={{ p: 2 }} component={Paper}>
               <Typography mb={2} variant="h5" component="h3" color="secondary.main" fontWeight="bold">Inspiré de l&apos;EURA</Typography>
               <Divider color="primary.dark" />
               <Stack spacing={2} mt={4}>
@@ -54,9 +53,10 @@ function Methods() {
                   Cupiditate dolore ipsum et ratione, minus suscipit! Quia, sed minima.
                 </Typography>
               </Stack>
-            </Paper>
+            </Grid>
 
-            <Paper sx={{ p: 2, width: '100%' }}>
+            {/* PAPER 2 */}
+            <Grid item xs={12} sm={5} sx={{ p: 2 }} component={Paper}>
               <Typography mb={2} variant="h5" component="h3" color="secondary.main" fontWeight="bold">Nourri de vos tournois</Typography>
               <Divider color="primary.dark" />
               <Stack spacing={2} mt={4}>
@@ -73,9 +73,10 @@ function Methods() {
                   Cupiditate dolore ipsum et ratione, minus suscipit! Quia, sed minima.
                 </Typography>
               </Stack>
-            </Paper>
+            </Grid>
 
-            <Paper sx={{ p: 2, width: '100%' }}>
+            {/* PAPER 3 */}
+            <Grid item xs={12} sm={6} sx={{ p: 2 }} component={Paper}>
               <Typography mb={2} variant="h5" component="h3" color="secondary.main" fontWeight="bold">Référent pour la compétition</Typography>
               <Divider color="primary.dark" />
               <Stack spacing={2} mt={4}>
@@ -92,9 +93,10 @@ function Methods() {
                   Cupiditate dolore ipsum et ratione, minus suscipit! Quia, sed minima.
                 </Typography>
               </Stack>
-            </Paper>
+            </Grid>
 
-            <Paper sx={{ p: 2, width: '100%' }}>
+            {/* PAPER 4 */}
+            <Grid item xs={12} sm={6} sx={{ p: 2 }} component={Paper}>
               <Typography mb={2} variant="h5" component="h3" color="secondary.main" fontWeight="bold">Pensé pour tou.te.s</Typography>
               <Divider color="primary.dark" />
               <Stack spacing={2} mt={4}>
@@ -111,8 +113,8 @@ function Methods() {
                   Cupiditate dolore ipsum et ratione, minus suscipit! Quia, sed minima.
                 </Typography>
               </Stack>
-            </Paper>
-          </Stack>
+            </Grid>
+          </Grid>
         </Container>
 
       </Box>
