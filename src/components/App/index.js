@@ -7,6 +7,7 @@ import WhoAreWe from '../WhoAreWe';
 import LogoCarousel from '../LogoCarousel';
 import Methods from '../Methods';
 import Ranking from '../Ranking';
+import Footer from '../Footer';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <LogoCarousel />
       <Methods />
       <Ranking />
+      <Footer />
     </div>
   );
 }

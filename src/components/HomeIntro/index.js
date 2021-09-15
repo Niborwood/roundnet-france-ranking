@@ -41,7 +41,7 @@ function HomeIntro() {
             variant="h4"
             component="h2"
             color="primary.contrastText"
-            lineHeight="1.5em"
+            lineHeight={{ xs: '1.1em', sm: '1.25em', md: '1.5em' }}
             letterSpacing="0.03em"
           >
             Le classement individuel

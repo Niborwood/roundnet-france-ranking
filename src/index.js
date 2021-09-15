@@ -1,31 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { frFR } from '@mui/material/locale';
 
 import './index.scss';
 
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 
-const muiTheme = createTheme({
-  typography: {
-    fontFamily: 'Urbanist, sans-serif',
-  },
-  palette: {
-    type: 'dark',
-    primary: {
-      light: '#778edc',
-      main: '#315bcd',
-      dark: '#1e48b6',
-      analogous: '#31a9cd',
+const muiTheme = createTheme(
+  {
+    typography: {
+      fontFamily: 'Urbanist, sans-serif',
     },
-    secondary: {
-      light: '#fb5d89',
-      main: '#f50057',
-      dark: '#cf0051',
+    palette: {
+      type: 'dark',
+      primary: {
+        light: '#778edc',
+        main: '#315bcd',
+        dark: '#1e48b6',
+        analogous: '#31a9cd',
+      },
+      secondary: {
+        light: '#fb5d89',
+        main: '#f50057',
+        dark: '#cf0051',
+      },
     },
   },
-});
+  frFR,
+);
 
 ReactDOM.render(
   <React.StrictMode>

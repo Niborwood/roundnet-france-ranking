@@ -14,6 +14,8 @@ import Slide from '@mui/material/Slide';
 // OUTER COMPONENTS
 import MenuDrawer from '../MenuDrawer';
 
+import logoFrance from '../../assets/images/logos/roundnet-france-tp-blanc.png';
+
 function HideOnScroll(props) {
   const { children } = props;
   // Note that you normally won't need to set the window ref as useScrollTrigger
@@ -40,7 +42,8 @@ function Header(props) {
         <AppBar>
           <Toolbar>
             <MenuDrawer />
-            <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
+            <img height="50px" src={logoFrance} alt="Material-UI" />
+            <Typography ml={2} variant="h6" component="h1" sx={{ flexGrow: 1 }}>
               Roundnet France Ranking
             </Typography>
             <ButtonGroup variant="text" sx={{ display: { xs: 'none', md: 'block' } }}>
