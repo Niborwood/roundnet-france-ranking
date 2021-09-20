@@ -10,7 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^3.0.2",
     "apollo-server": "^3.3.0",
     "graphql": "^15.5.3"
+  },
+  "devDependencies": {
+    "prisma": "^3.0.2"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   }
 }
