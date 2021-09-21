@@ -1,13 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {
+  ApolloProvider,
+  ApolloClient,
+  createHttpLink,
+  InMemoryCache,
+} from '@apollo/client';
+
+// MUI IMPORTS
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { frFR } from '@mui/material/locale';
 
+// SCSS
 import './index.scss';
 
+// APP IMPORT
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 
+// MUI THEME
 const muiTheme = createTheme(
   {
     typography: {
@@ -31,11 +42,23 @@ const muiTheme = createTheme(
   frFR,
 );
 
+// GRAPHQL APOLLO CONFIG
+const httpLink = createHttpLink({
+  uri: 'http://localhost:4000',
+});
+
+const client = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache(),
+});
+
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={muiTheme}>
-      <App />
-    </ThemeProvider>
+    <ApolloProvider client={client}>
+      <ThemeProvider theme={muiTheme}>
+        <App />
+      </ThemeProvider>
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );
