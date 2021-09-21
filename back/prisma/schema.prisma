@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// DATASOURCE
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// GENRATOR
+generator client {
+  provider = "prisma-client-js"
+}
+
+// MODELS
+model Player {
+  id          Int                  @id @default(autoincrement())
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime?
+  name        String
+  surname     String
+  tournaments PlayerOnTournament[]
+}
+
+model Tournament {
+  id           Int                  @id @default(autoincrement())
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime?
+  name         String
+  date         String
+  participants Int
+  place        Place?               @relation(fields: [placeId], references: [id])
+  placeId      Int?
+  players      PlayerOnTournament[]
+}
+
+model PlayerOnTournament {
+  id           Int        @id @default(autoincrement())
+  player       Player     @relation(fields: [playerId], references: [id])
+  playerId     Int
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+  tournamentId Int
+  team         Team?      @relation(fields: [teamId], references: [id])
+  teamId       Int?
+  rank         Int
+  points       Int
+}
+
+model Place {
+  id          Int          @id @default(autoincrement())
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime?
+  name        String
+  tournaments Tournament[]
+}
+
+model Team {
+  id        Int                  @id @default(autoincrement())
+  createdAt DateTime             @default(now())
+  updatedAt DateTime?
+  name      String               @unique
+  players   PlayerOnTournament[]
+}
