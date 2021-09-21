@@ -44,7 +44,7 @@ const muiTheme = createTheme(
 
 // GRAPHQL APOLLO CONFIG
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000',
+  uri: 'https://roundnet-france-ranking.herokuapp.com/',
 });
 
 const client = new ApolloClient({
