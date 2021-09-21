@@ -14,6 +14,7 @@ type PlayerOnTournament {
     playerId: Int!
     rank: Int!
     points: Int!
+    place: Place!
     player: Player!
     team: Team
 }
@@ -25,6 +26,11 @@ type Player {
 }
 
 type Team {
+    id: ID!
+    name: String!
+}
+
+type Place {
     id: ID!
     name: String!
 }

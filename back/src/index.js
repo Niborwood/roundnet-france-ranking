@@ -23,7 +23,6 @@ const resolvers = {
           }
         ]
       });
-      console.log(ranking);
       return ranking;
     }
   },
