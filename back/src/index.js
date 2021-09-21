@@ -1,3 +1,4 @@
+// IMPORTS
 const fs = require('fs');
 const path = require('path');
 const { ApolloServer } = require('apollo-server');
@@ -68,7 +69,10 @@ const server = new ApolloServer({
 
 // LAUNCH SERVER
 server
-  .listen()
+  .listen({ port: process.env.PORT || 4000 })
   .then(({ url }) =>
-    console.log(`Server is running on ${url}`)
+    console.log(`
+    🚀  Server is ready at ${url}
+    📭  Query at https://studio.apollographql.com/dev
+  `)
   );
