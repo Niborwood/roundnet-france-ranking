@@ -9,7 +9,22 @@ const resolvers = {
   Query: {
     info: () => `This is the API of Roundnet France Ranking`,
     ranking: async (parent, args, context) => {
-      return context.prisma.playerOnTournament.findMany();
+      const ranking = await context.prisma.playerOnTournament.findMany({
+        include: {
+          player: true,
+          team: true,
+        },
+        orderBy: [
+          {
+            points: 'desc',
+          },
+          {
+            rank: 'asc',
+          }
+        ]
+      });
+      console.log(ranking);
+      return ranking;
     }
   },
   // Mutation: {
@@ -23,23 +38,23 @@ const resolvers = {
   //     })
   //     return newLink;
   //   },
-    // updateLink: (parent, args) => {
-    //   const newLink = {
-    //     id: args.id,
-    //     description: args.description,
-    //     url: args.url,
-    //   };
+  // updateLink: (parent, args) => {
+  //   const newLink = {
+  //     id: args.id,
+  //     description: args.description,
+  //     url: args.url,
+  //   };
 
-    //   const index = links.findIndex(link => link.id === newLink.id);
-    //   links[index] = newLink;
-    //   return newLink;
-    // },
-    // deleteLink: (parent, args) => {
-    //   const index = links.findIndex(link => link.id === args.id);
-    //   if (index > -1) {
-    //     links.splice(index, 1);
-    //   }
-    // },
+  //   const index = links.findIndex(link => link.id === newLink.id);
+  //   links[index] = newLink;
+  //   return newLink;
+  // },
+  // deleteLink: (parent, args) => {
+  //   const index = links.findIndex(link => link.id === args.id);
+  //   if (index > -1) {
+  //     links.splice(index, 1);
+  //   }
+  // },
   // },
 }
 
