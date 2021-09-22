@@ -1,13 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {
+  ApolloProvider,
+  ApolloClient,
+  createHttpLink,
+  InMemoryCache,
+} from '@apollo/client';
+
+import { BrowserRouter as Router } from 'react-router-dom';
+
+// MUI IMPORTS
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { frFR } from '@mui/material/locale';
 
+// SCSS
 import './index.scss';
 
+// APP IMPORT
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
 
+// MUI THEME
 const muiTheme = createTheme(
   {
     typography: {
@@ -31,11 +44,25 @@ const muiTheme = createTheme(
   frFR,
 );
 
+// GRAPHQL APOLLO CONFIG
+const httpLink = createHttpLink({
+  uri: 'https://roundnet-france-ranking.herokuapp.com/',
+});
+
+const client = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache(),
+});
+
 ReactDOM.render(
   <React.StrictMode>
-    <ThemeProvider theme={muiTheme}>
-      <App />
-    </ThemeProvider>
+    <ApolloProvider client={client}>
+      <ThemeProvider theme={muiTheme}>
+        <Router>
+          <App />
+        </Router>
+      </ThemeProvider>
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

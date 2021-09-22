@@ -21,6 +21,7 @@
         "react/jsx-filename-extension": [1, {
             "extensions": [".js", ".jsx"]
         }],
-        "no-unused-vars": "warn"
+        "no-unused-vars": "warn",
+        "linebreak-style": 0
     }
 }

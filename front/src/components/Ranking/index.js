@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
+import { useQuery, gql } from '@apollo/client';
 
+// MUI IMPORTS
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
+// MUI TABLE IMPORTS
 import TablePagination from '@mui/material/TablePagination';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -97,74 +100,29 @@ TablePaginationActions.propTypes = {
 };
 
 function Ranking() {
-  const rows = [
+  // Adding data for the table from the GraphQL API
+  const RANKING_QUERY = gql`
     {
-      id: 1, player: 'Louis Jouve', points: 870,
-    },
-    {
-      id: 2, player: 'Thomas Jouve', points: 802,
-    },
-    {
-      id: 3, player: 'Charles Mordacq', points: 610,
-    },
-    {
-      id: 4, player: 'Dorian Améziane', points: 580,
-    },
-    {
-      id: 5, player: 'Benoit Nguyen', points: 469,
-    },
-    {
-      id: 6, player: 'Erwan Chapelière', points: 430,
-    },
-    {
-      id: 7, player: 'Benoît Durand', points: 369,
-    },
-    {
-      id: 8, player: 'Robin Florinda', points: 286,
-    },
-    {
-      id: 9, player: 'Juliette Dufourcq', points: 278,
-    },
-    {
-      id: 10, player: 'Robin Souriau', points: 274,
-    },
-    {
-      id: 11, player: 'Ryan Danekas', points: 258,
-    },
-    {
-      id: 12, player: 'Alexandre Marti', points: 223,
-    },
-    {
-      id: 13, player: 'Anaïs Duport', points: 218,
-    },
-    {
-      id: 14, player: 'Cebastien Page', points: 210,
-    },
-    {
-      id: 15, player: 'Nicolas Brun', points: 205,
-    },
-    {
-      id: 16, player: 'Tristan Olin', points: 205,
-    },
-    {
-      id: 17, player: 'Lancelot Touzé', points: 176,
-    },
-    {
-      id: 18, player: 'Ignacio Pita Vaca', points: 175,
-    },
-    {
-      id: 19, player: 'Gabriel Rodriguez', points: 174,
-    },
-    {
-      id: 20, player: 'Jan-Peter Geringer', points: 169,
-    },
-  ];
+      ranking {
+        playerId
+        rank
+        points
+        player {
+          name
+          surname
+        }
+      }
+    }
+  `;
+  const { data, loading } = useQuery(RANKING_QUERY);
+  const rankingList = data?.ranking;
 
+  // Pagination
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  // Avoid a layout jump when reaching the last page with empty rankingList.
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rankingList.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -180,10 +138,6 @@ function Ranking() {
       img: roundnetMasonry1,
       title: 'Fern',
     },
-    // {
-    //   img: roundnetMasonry2,
-    //   title: 'Snacks',
-    // },
     {
       img: roundnetMasonry3,
       title: 'Mushrooms',
@@ -192,10 +146,6 @@ function Ranking() {
       img: roundnetMasonry4,
       title: 'Tower',
     },
-    // {
-    //   img: roundnetMasonry5,
-    //   title: 'Sea star',
-    // },
     {
       img: roundnetMasonry6,
       title: 'Honey',
@@ -221,74 +171,84 @@ function Ranking() {
         {' '}
         {new Date().toLocaleDateString()}
       </Typography>
-      <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems="center">
-        <TableContainer component={Paper} variant="outlined" sx={{ width: { xs: '100%', md: '50%' } }}>
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Rang</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Joueur.se</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', fontSize: '1.1rem' }} align="right">Points</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {(rowsPerPage > 0
-                ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                : rows
-              ).map((row) => (
-                <TableRow
-                  key={row.player}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:nth-of-type(odd)': { background: '#c5cef0' } }}
-                >
-                  <TableCell component="th" scope="row">
-                    {row.id }
-                  </TableCell>
-                  <TableCell>{row.player}</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }} align="right">{row.points}</TableCell>
-                </TableRow>
-              ))}
-              {emptyRows > 0 && (
-              <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
-              </TableRow>
-              )}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 15, { label: 'Tous', value: -1 }]}
-                  colSpan={3}
-                  count={rows.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  SelectProps={{
-                    inputProps: {
-                      'aria-label': 'résultats par page',
-                    },
-                    native: true,
-                  }}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
-                  ActionsComponent={TablePaginationActions}
-                />
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
-        <Box sx={{ width: { xs: '100%', md: '50%' } }}>
-          <Masonry columns={2} spacing={1}>
-            {itemData.map((item) => (
-              <MasonryItem key={item.img}>
-                <img
-                  src={item.img}
-                  srcSet={item.img}
-                  alt={item.title}
-                />
-              </MasonryItem>
-            ))}
-          </Masonry>
-        </Box>
-      </Stack>
+
+      {/* TABLE */}
+      {loading ? <p>Loading</p>
+        : (
+          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems="center">
+            <TableContainer component={Paper} variant="outlined" sx={{ width: { xs: '100%', md: '50%' } }}>
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Rang</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold', fontSize: '1.1rem' }}>Joueur.se</TableCell>
+                    <TableCell sx={{ fontWeight: 'bold', fontSize: '1.1rem' }} align="right">Points</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {(rowsPerPage > 0
+                    ? rankingList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    : rankingList
+                  ).map((row) => (
+                    <TableRow
+                      key={row.playerId}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:nth-of-type(odd)': { background: '#c5cef0' } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.rank}
+                      </TableCell>
+                      <TableCell>
+                        {row.player.name}
+                        {' '}
+                        {row.player.surname}
+                      </TableCell>
+                      <TableCell sx={{ fontWeight: 'bold' }} align="right">{row.points}</TableCell>
+                    </TableRow>
+                  ))}
+                  {emptyRows > 0 && (
+                    <TableRow style={{ height: 53 * emptyRows }}>
+                      <TableCell colSpan={6} />
+                    </TableRow>
+                  )}
+                </TableBody>
+                <TableFooter>
+                  <TableRow>
+                    <TablePagination
+                      rowsPerPageOptions={[5, 10, 15, { label: 'Tous', value: -1 }]}
+                      colSpan={3}
+                      count={rankingList.length}
+                      rowsPerPage={rowsPerPage}
+                      page={page}
+                      SelectProps={{
+                        inputProps: {
+                          'aria-label': 'résultats par page',
+                        },
+                        native: true,
+                      }}
+                      onPageChange={handleChangePage}
+                      onRowsPerPageChange={handleChangeRowsPerPage}
+                      ActionsComponent={TablePaginationActions}
+                    />
+                  </TableRow>
+                </TableFooter>
+              </Table>
+            </TableContainer>
+            <Box sx={{ width: { xs: '100%', md: '50%' } }}>
+              <Masonry columns={2} spacing={1}>
+                {itemData.map((item) => (
+                  <MasonryItem key={item.img}>
+                    <img
+                      src={item.img}
+                      srcSet={item.img}
+                      alt={item.title}
+                    />
+                  </MasonryItem>
+                ))}
+              </Masonry>
+            </Box>
+          </Stack>
+        )}
+
     </Container>
   );
 }
