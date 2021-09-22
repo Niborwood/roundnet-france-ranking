@@ -574,7 +574,7 @@ async function main() {
           // Born To Spike
           {
             rank: 19,
-            points: 165,
+            points: 43,
             team: {
               connectOrCreate: {
                 where: { name: 'Born To Spike' },
@@ -588,7 +588,7 @@ async function main() {
           },
           {
             rank: 19,
-            points: 165,
+            points: 43,
             team: {
               connectOrCreate: {
                 where: { name: 'Born To Spike' },
