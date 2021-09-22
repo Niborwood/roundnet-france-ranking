@@ -30,6 +30,9 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 // MATERIAL ICONS
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 
+// COMPONENTS IMPORTS
+import LoadingSkeleton from '../LoadingSkeleton';
+
 // IMAGES IMPORTS
 import roundnetMasonry1 from '../../assets/images/ranking-masonry/roundnet-france-ranking1.jpg';
 import roundnetMasonry3 from '../../assets/images/ranking-masonry/roundnet-france-ranking3.jpg';
@@ -173,9 +176,9 @@ function Ranking() {
       </Typography>
 
       {/* TABLE */}
-      {loading ? <p>Loading</p>
-        : (
-          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems="center">
+      <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems="center">
+        {loading ? <LoadingSkeleton />
+          : (
             <TableContainer component={Paper} variant="outlined" sx={{ width: { xs: '100%', md: '50%' } }}>
               <Table aria-label="simple table">
                 <TableHead>
@@ -206,9 +209,9 @@ function Ranking() {
                     </TableRow>
                   ))}
                   {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
+                  <TableRow style={{ height: 53 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
                   )}
                 </TableBody>
                 <TableFooter>
@@ -233,21 +236,21 @@ function Ranking() {
                 </TableFooter>
               </Table>
             </TableContainer>
-            <Box sx={{ width: { xs: '100%', md: '50%' } }}>
-              <Masonry columns={2} spacing={1}>
-                {itemData.map((item) => (
-                  <MasonryItem key={item.img}>
-                    <img
-                      src={item.img}
-                      srcSet={item.img}
-                      alt={item.title}
-                    />
-                  </MasonryItem>
-                ))}
-              </Masonry>
-            </Box>
-          </Stack>
-        )}
+          )}
+        <Box sx={{ width: { xs: '100%', md: '50%' } }}>
+          <Masonry columns={2} spacing={1}>
+            {itemData.map((item) => (
+              <MasonryItem key={item.img}>
+                <img
+                  src={item.img}
+                  srcSet={item.img}
+                  alt={item.title}
+                />
+              </MasonryItem>
+            ))}
+          </Masonry>
+        </Box>
+      </Stack>
 
     </Container>
   );
