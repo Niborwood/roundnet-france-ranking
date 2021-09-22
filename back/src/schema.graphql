@@ -10,7 +10,6 @@ type Query {
 # }
 
 type PlayerOnTournament {
-    id: ID!
     playerId: Int!
     rank: Int!
     points: Int!
