@@ -10,20 +10,32 @@ const resolvers = {
   Query: {
     info: () => `This is the API of Roundnet France Ranking`,
     ranking: async (parent, args, context) => {
-      const ranking = await context.prisma.playerOnTournament.findMany({
-        include: {
-          player: true,
-          team: true,
+      const rankingRaw = await context.prisma.playerOnTournament.groupBy({
+        by: ['playerId'],
+        _sum: {
+          points: true,
         },
-        orderBy: [
-          {
+        orderBy: {
+          _sum: {
             points: 'desc',
-          },
-          {
-            rank: 'asc',
           }
-        ]
+        }
       });
+
+      // Retrieving the player's info
+      const playersData = await context.prisma.player.findMany();
+
+      // Merging rankingRaw with playersData
+      const ranking = rankingRaw.map((player, index) => {
+        const playerInfo = playersData.find(p => p.id === player.playerId);
+        return {
+          playerId: player.playerId,
+          points: player._sum.points,
+          rank: index + 1,
+          player: playerInfo,
+        };
+      });
+
       return ranking;
     }
   },
