@@ -30,7 +30,7 @@ function App() {
           <Ranking />
           <Footer />
         </Route>
-        <Route path="/rfadmin">
+        <Route path="/rf-admin">
           <SignIn />
         </Route>
       </Switch>
