@@ -7,6 +7,8 @@ import {
   InMemoryCache,
 } from '@apollo/client';
 
+import { BrowserRouter as Router } from 'react-router-dom';
+
 // MUI IMPORTS
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { frFR } from '@mui/material/locale';
@@ -56,7 +58,9 @@ ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
       <ThemeProvider theme={muiTheme}>
-        <App />
+        <Router>
+          <App />
+        </Router>
       </ThemeProvider>
     </ApolloProvider>
   </React.StrictMode>,
