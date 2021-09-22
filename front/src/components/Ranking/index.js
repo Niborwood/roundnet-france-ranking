@@ -104,7 +104,8 @@ function Ranking() {
   const RANKING_QUERY = gql`
     {
       ranking {
-        id
+        playerId
+        rank
         points
         player {
           name
@@ -114,12 +115,7 @@ function Ranking() {
     }
   `;
   const { data, loading } = useQuery(RANKING_QUERY);
-  const rankingRaw = data?.ranking;
-  // Adding an index within the rankingList
-  const rankingList = rankingRaw?.map((ranking, index) => ({
-    ...ranking,
-    index: index + 1,
-  }));
+  const rankingList = data?.ranking;
 
   // Pagination
   const [page, setPage] = useState(0);
@@ -195,11 +191,11 @@ function Ranking() {
                     : rankingList
                   ).map((row) => (
                     <TableRow
-                      key={row.id}
+                      key={row.playerId}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:nth-of-type(odd)': { background: '#c5cef0' } }}
                     >
                       <TableCell component="th" scope="row">
-                        {row.index}
+                        {row.rank}
                       </TableCell>
                       <TableCell>
                         {row.player.name}
@@ -210,9 +206,9 @@ function Ranking() {
                     </TableRow>
                   ))}
                   {emptyRows > 0 && (
-                  <TableRow style={{ height: 53 * emptyRows }}>
-                    <TableCell colSpan={6} />
-                  </TableRow>
+                    <TableRow style={{ height: 53 * emptyRows }}>
+                      <TableCell colSpan={6} />
+                    </TableRow>
                   )}
                 </TableBody>
                 <TableFooter>
