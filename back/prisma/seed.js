@@ -2,11 +2,19 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
-  const places = await prisma.place.upsert({
+  const placeParis = await prisma.place.upsert({
     where: { id: 1 },
     update: {},
     create: {
       name: 'Paris',
+    }
+  });
+
+  const placeLille = await prisma.place.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      name: 'Lille',
     }
   });
 
@@ -1855,8 +1863,17 @@ async function main() {
         ]
       }
     },
+  });
 
-      
+  const openLille = await prisma.tournament.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      name: 'Open de Lille',
+      date: new Date('2020-06-01'),
+      place: { connect: { id: placeLille.id } },
+      participants: 22,
+    }
   });
 }
 
