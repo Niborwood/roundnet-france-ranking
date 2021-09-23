@@ -1,10 +1,11 @@
 import React from 'react';
 
 import Skeleton from '@mui/material/Skeleton';
+import Box from '@mui/material/Box';
 
 function LoadingSkeleton() {
   return (
-    <div className="loading">
+    <Box sx={{ width: '100%' }}>
       <Skeleton />
       <Skeleton />
       <Skeleton />
@@ -15,7 +16,7 @@ function LoadingSkeleton() {
       <Skeleton />
       <Skeleton />
       <Skeleton />
-    </div>
+    </Box>
   );
 }
 
