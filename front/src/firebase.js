@@ -15,7 +15,6 @@ import {
 // FIREBASE FIRESTORE DB IMPORTS
 import {
   getFirestore,
-  collection,
   setDoc,
   doc,
   getDoc,
@@ -52,11 +51,9 @@ const signInWithGoogle = async () => {
     // Check if user already exists in the database
     const userRef = doc(db, 'users', user.uid);
     const userSnap = await getDoc(userRef);
-    console.log(userSnap.exists());
 
     // If user does not exist, create a new user
     if (!userSnap.exists()) {
-      console.log('in exists');
       await setDoc(doc(db, 'users', user.uid), {
         uid: user.uid,
         email: user.email,
@@ -83,16 +80,17 @@ const signInLocal = async (email, password) => {
 };
 const registerLocal = async (name, email, password) => {
   try {
-    createUserWithEmailAndPassword(email, password);
-    // // const { user } = res;
-    // await db.collection('users').add({
-    //   uid: user.uid,
-    //   name,
-    //   authProvider: 'local',
-    //   email,
-    //   role: 'admin',
-    //   status: 'pending',
-    // });
+    const { user } = await createUserWithEmailAndPassword(email, password);
+    await setDoc(doc(db, 'users', user.uid), {
+      uid: user.uid,
+      email: user.email,
+      // name: user.name,
+      password: user.password,
+      // photoURL: user.photoURL,
+      createdAt: new Date(),
+      status: 'pending',
+      role: 'admin',
+    });
   } catch (err) {
     console.error(err);
     alert(err.message);

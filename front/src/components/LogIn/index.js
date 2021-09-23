@@ -18,7 +18,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import GoogleIcon from '@mui/icons-material/Google';
 
 // FIREBASE IMPORTS
-import { auth, signInLocal, signInWithGoogle } from '../../firebase';
+import { auth, registerLocal, signInWithGoogle } from '../../firebase';
 
 function LogIn() {
   // Firebase Auth State & History Hooks
@@ -92,6 +92,7 @@ function LogIn() {
       <Button
         type="submit"
         variant="contained"
+        onClick={() => registerLocal(values.email, values.password)}
       >
         Se connecter
       </Button>
