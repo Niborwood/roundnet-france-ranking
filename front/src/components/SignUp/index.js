@@ -108,7 +108,7 @@ function SignUp() {
       />
 
       {/* Submit button */}
-      <Button type="submit" variant="contained">Se connecter</Button>
+      <Button type="submit" variant="contained">Créer un compte</Button>
 
       <Divider />
 
