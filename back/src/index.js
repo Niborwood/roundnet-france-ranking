@@ -1,3 +1,4 @@
+// IMPORTS
 const fs = require('fs');
 const path = require('path');
 const { ApolloServer } = require('apollo-server');
@@ -9,20 +10,13 @@ const resolvers = {
   Query: {
     info: () => `This is the API of Roundnet France Ranking`,
     ranking: async (parent, args, context) => {
-      const ranking = await context.prisma.playerOnTournament.findMany({
-        include: {
-          player: true,
-          team: true,
+      const ranking = await context.prisma.playerOnTournament.groupBy({
+        by: 'playerId',
+        _sum: {
+          points: true,
         },
-        orderBy: [
-          {
-            points: 'desc',
-          },
-          {
-            rank: 'asc',
-          }
-        ]
       });
+      console.log(ranking);
       return ranking;
     }
   },
@@ -68,7 +62,10 @@ const server = new ApolloServer({
 
 // LAUNCH SERVER
 server
-  .listen()
+  .listen({ port: process.env.PORT || 4000 })
   .then(({ url }) =>
-    console.log(`Server is running on ${url}`)
+    console.log(`
+    🚀  Server is ready at ${url}
+    📭  Query at https://studio.apollographql.com/dev
+  `)
   );
