@@ -8,6 +8,7 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import InputAdornment from '@mui/material/InputAdornment';
 import Divider from '@mui/material/Divider';
+import Autocomplete from '@mui/material/Autocomplete';
 
 // MUI ICONS IMPORTS
 import Visibility from '@mui/icons-material/Visibility';
@@ -23,6 +24,16 @@ function SignUp() {
     club: '',
     showPassword: false,
   });
+
+  // Example clubs
+  const clubs = [
+    { id: 1, name: 'Roundnet Paris' },
+    { id: 2, name: 'Roundnet Lyon' },
+    { id: 3, name: 'Roundnet Toulouse' },
+    { id: 4, name: 'Roundnet Lille' },
+    { id: 5, name: 'Roundnet Bordeaux' },
+    { id: 5, name: 'Titans Roundnet' },
+  ];
 
   return (
     <>
@@ -46,12 +57,12 @@ function SignUp() {
       />
 
       {/* Club Input */}
-      <TextField
+      <Autocomplete
         id="club-account"
-        label="Club"
-        required
-        value={values.club}
-        onChange={(e) => setValues({ ...values, club: e.target.value })}
+        freeSolo
+        options={clubs.map((club) => club.name)}
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        renderInput={(params) => (<TextField {...params} label="Club" />)}
       />
 
       {/* Password input */}
