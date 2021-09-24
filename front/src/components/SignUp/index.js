@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 // MUI IMPORTS
 import Button from '@mui/material/Button';
@@ -17,7 +18,6 @@ function SignUp() {
   const [values, setValues] = useState({
     email: '',
     name: '',
-    surname: '',
     password: '',
     passwordConfirm: '',
     club: '',
@@ -39,22 +39,13 @@ function SignUp() {
       {/* Name Input */}
       <TextField
         id="name-account"
-        label="Prénom"
+        label="Nom &amp; Prénom"
         required
         value={values.name}
         onChange={(e) => setValues({ ...values, name: e.target.value })}
       />
 
-      {/* Surname Input */}
-      <TextField
-        id="surname-account"
-        label="Nom"
-        required
-        value={values.surname}
-        onChange={(e) => setValues({ ...values, surname: e.target.value })}
-      />
-
-      {/* CLub Input */}
+      {/* Club Input */}
       <TextField
         id="club-account"
         label="Club"
@@ -108,13 +99,15 @@ function SignUp() {
       />
 
       {/* Submit button */}
-      <Button type="submit" variant="contained">Se connecter</Button>
+      <Button type="submit" variant="contained">Créer un compte</Button>
 
       <Divider />
 
       {/* Create account link */}
       <Typography variant="body2">
         <Link
+          component={RouterLink}
+          to="/rf-admin"
           href="/rf-admin"
           underline="hover"
         >

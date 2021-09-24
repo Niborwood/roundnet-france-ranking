@@ -12,9 +12,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // MUI IMPORTS
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { frFR } from '@mui/material/locale';
-
-// SCSS
-import './index.scss';
+import CssBaseline from '@mui/material/CssBaseline';
 
 // APP IMPORT
 import App from './components/App';
@@ -59,7 +57,9 @@ ReactDOM.render(
     <ApolloProvider client={client}>
       <ThemeProvider theme={muiTheme}>
         <Router>
-          <App />
+          <CssBaseline>
+            <App />
+          </CssBaseline>
         </Router>
       </ThemeProvider>
     </ApolloProvider>

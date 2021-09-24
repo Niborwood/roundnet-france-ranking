@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 // MUI IMPORTS
 import Button from '@mui/material/Button';
@@ -13,14 +15,32 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import GoogleIcon from '@mui/icons-material/Google';
+
+// FIREBASE IMPORTS
+import { auth, registerLocal, signInWithGoogle } from '../../firebase';
 
 function LogIn() {
+  // Firebase Auth State & History Hooks
+  const [user, loading, error] = useAuthState(auth);
+  const history = useHistory();
+
   // Controlled inputs
   const [values, setValues] = useState({
     email: '',
     password: '',
     showPassword: false,
   });
+
+  //
+  useEffect(() => {
+    if (loading) {
+      // maybe trigger a loading screen
+      return;
+    }
+    console.log(user);
+    // if (user) history.replace('/dashboard');
+  }, [user, loading]);
 
   return (
     <>
@@ -69,14 +89,33 @@ function LogIn() {
       />
 
       {/* Submit button */}
-      <Button type="submit" variant="contained">Se connecter</Button>
+      <Button
+        type="submit"
+        variant="contained"
+        onClick={() => registerLocal('Robin', values.email, values.password)}
+      >
+        Se connecter
+      </Button>
+
+      {/* Google Log button */}
+      <Button
+        color="secondary"
+        startIcon={<GoogleIcon />}
+        type="button"
+        variant="outlined"
+        onClick={signInWithGoogle}
+      >
+        Se connecter avec Google
+      </Button>
 
       <Divider />
 
       {/* Create account link */}
       <Typography variant="body2">
         <Link
+          component={RouterLink}
           href="/rf-signup"
+          to="/rf-signup"
           underline="hover"
         >
           Pas encore de compte
@@ -84,7 +123,12 @@ function LogIn() {
         {' '}
         |
         {' '}
-        <Link href="/rf-pwd-forgotten" underline="hover">
+        <Link
+          component={RouterLink}
+          href="/rf-pwd-forgotten"
+          to="/rf-pwd-forgotten"
+          underline="hover"
+        >
           Mot de passe oublié ?
         </Link>
       </Typography>

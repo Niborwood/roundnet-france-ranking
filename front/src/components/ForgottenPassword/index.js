@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 // MUI IMPORTS
 import Button from '@mui/material/Button';
@@ -44,6 +45,8 @@ function ForgottenPassword() {
       {/* Create account link */}
       <Typography variant="body2">
         <Link
+          component={RouterLink}
+          to="/rf-admin"
           href="/rf-admin"
           underline="hover"
         >
