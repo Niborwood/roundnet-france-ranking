@@ -15,6 +15,7 @@ generator client {
 // MODELS
 model Player {
   id          Int                  @id @default(autoincrement())
+  euraId     Int?                 @unique
   createdAt   DateTime             @default(now())
   updatedAt   DateTime?
   name        String

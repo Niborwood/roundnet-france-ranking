@@ -8,7 +8,10 @@ const prisma = new PrismaClient();
 // RESOLVERS
 const resolvers = {
   Query: {
+    // GENERAL API INFO
     info: () => `This is the API of Roundnet France Ranking`,
+
+    // RANKING ALGORITHM
     ranking: async (parent, args, context) => {
       const rankingRaw = await context.prisma.playerOnTournament.groupBy({
         by: ['playerId'],
@@ -21,6 +24,7 @@ const resolvers = {
           }
         }
       });
+    
 
       // Retrieving the player's info
       const playersData = await context.prisma.player.findMany();
@@ -37,6 +41,16 @@ const resolvers = {
       });
 
       return ranking;
+    },
+
+    // GET CLUBS 
+    clubs: async (parent, args, context) => {
+      const clubs = await context.prisma.club.findMany({
+        include: {
+          players: true,
+        },
+      });
+      return clubs;
     }
   },
   // Mutation: {
