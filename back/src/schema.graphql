@@ -1,6 +1,7 @@
 type Query {
     info: String!
     ranking: [PlayerOnTournament!]!
+    clubs: [Club!]!
 }
 
 # type Mutation {
@@ -33,4 +34,10 @@ type Team {
 type Place {
     id: ID!
     name: String!
+}
+
+type Club {
+    id: ID!
+    name: String!
+    players: [Player]
 }
