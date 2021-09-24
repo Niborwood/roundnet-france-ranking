@@ -1,93 +1,121 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+
+// FIREBASE AUTH IMPORTS
+import {
+  getAuth,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  signOut,
+  GoogleAuthProvider,
+} from 'firebase/auth';
+
+// FIREBASE FIRESTORE DB IMPORTS
+import {
+  getFirestore,
+  setDoc,
+  doc,
+  getDoc,
+} from 'firebase/firestore';
+
 // import { getAnalytics } from 'firebase/analytics';
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyB7iztvOGOxJNIjjVPiK-OiB4YM3uxxH44',
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: 'roundnet-france-ranking.firebaseapp.com',
   projectId: 'roundnet-france-ranking',
   storageBucket: 'roundnet-france-ranking.appspot.com',
   messagingSenderId: '923127357906',
   appId: '1:923127357906:web:9be96b1e0bef66bd7b680b',
-  measurementId: 'G-R5G890WRM4',
+  // measurementId: 'G-R5G890WRM4',
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore();
 
 // Add methods to the Firebase SDK
 const googleProvider = new GoogleAuthProvider();
+
 const signInWithGoogle = async () => {
   try {
-    const res = await auth.signInWithPopup(googleProvider);
-    const { user } = res;
-    const query = await db
-      .collection('users')
-      .where('uid', '==', user.uid)
-      .get();
-    if (query.docs.length === 0) {
-      await db.collection('users').add({
+    // Use the popup to sign in the user
+    const { user } = await signInWithPopup(auth, googleProvider);
+
+    // Check if user already exists in the database
+    const userRef = doc(db, 'users', user.uid);
+    const userSnap = await getDoc(userRef);
+
+    // If user does not exist, create a new user
+    if (!userSnap.exists()) {
+      await setDoc(doc(db, 'users', user.uid), {
         uid: user.uid,
-        name: user.displayName,
-        authProvider: 'google',
         email: user.email,
+        name: user.displayName,
+        photoURL: user.photoURL,
+        createdAt: new Date(),
+        status: 'pending',
+        role: 'admin',
       });
     }
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.error(errorCode, errorMessage);
   }
 };
-const signInWithEmailAndPassword = async (email, password) => {
+const signInLocal = async (email, password) => {
   try {
-    await auth.signInWithEmailAndPassword(email, password);
+    signInWithEmailAndPassword(email, password);
   } catch (err) {
-    console.error(err);
-    alert(err.message);
+    console.error(err.code);
+    alert(err.code);
   }
 };
-const registerWithEmailAndPassword = async (name, email, password) => {
+const registerLocal = async (name, email, password) => {
+  console.log(email, password);
   try {
-    const res = await auth.createUserWithEmailAndPassword(email, password);
-    const { user } = res;
-    await db.collection('users').add({
+    const { user } = await createUserWithEmailAndPassword(auth, email, password);
+    await setDoc(doc(db, 'users', user.uid), {
       uid: user.uid,
+      email: user.email,
       name,
-      authProvider: 'local',
-      email,
+      password,
+      createdAt: new Date(),
+      status: 'pending',
+      role: 'admin',
     });
   } catch (err) {
     console.error(err);
-    alert(err.message);
+    alert(err.code);
   }
 };
-const sendPasswordResetEmail = async (email) => {
+const sendPasswordReset = async (email) => {
   try {
-    await auth.sendPasswordResetEmail(email);
+    sendPasswordResetEmail(email);
     alert('Password reset link sent!');
   } catch (err) {
     console.error(err);
     alert(err.message);
   }
 };
-const logout = () => {
+const userLogout = () => {
   auth.signOut();
 };
 export {
   auth,
   db,
   signInWithGoogle,
-  signInWithEmailAndPassword,
-  registerWithEmailAndPassword,
-  sendPasswordResetEmail,
-  logout,
+  signInLocal,
+  registerLocal,
+  sendPasswordReset,
+  signOut,
 };
 
 // const analytics = getAnalytics(app);

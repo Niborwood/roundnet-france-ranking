@@ -20,6 +20,9 @@ import LogIn from '../LogIn';
 import SignUp from '../SignUp';
 import ForgottenPassword from '../ForgottenPassword';
 
+// DASHBOARD
+import Dashboard from '../Dashboard';
+
 function App() {
   return (
     <div className="app">
@@ -37,24 +40,29 @@ function App() {
         </Route>
 
         {/* LOG IN */}
-        <Route path="/rf-admin">
+        <Route exact path="/rf-admin">
           <SignInWrapper title="Se Connecter">
             <LogIn />
           </SignInWrapper>
         </Route>
 
         {/* SIGN UP */}
-        <Route path="/rf-signup">
+        <Route exact path="/rf-signup">
           <SignInWrapper title="Créer un compte">
             <SignUp />
           </SignInWrapper>
         </Route>
 
         {/* PASSWORD FORGOTTEN */}
-        <Route path="/rf-pwd-forgotten">
+        <Route exact path="/rf-pwd-forgotten">
           <SignInWrapper title="Mot de passe oublié">
             <ForgottenPassword />
           </SignInWrapper>
+        </Route>
+
+        {/* DASHBOARD */}
+        <Route exact path="/rf-dashboard">
+          <Dashboard />
         </Route>
       </Switch>
     </div>
