@@ -71,25 +71,29 @@ const signInWithGoogle = async () => {
   }
 };
 const signInLocal = async (email, password) => {
+  console.log(email, password);
   try {
-    signInWithEmailAndPassword(email, password);
+    signInWithEmailAndPassword(auth, email, password);
   } catch (err) {
     console.error(err.code);
     alert(err.code);
   }
 };
-const registerLocal = async (name, email, password) => {
+const registerLocal = async (email, name, club, password, passwordConfirm) => {
   try {
-    const { user } = await createUserWithEmailAndPassword(auth, email, password);
-    await setDoc(doc(db, 'users', user.uid), {
-      uid: user.uid,
-      email: user.email,
-      name,
-      password,
-      createdAt: new Date(),
-      status: 'pending',
-      role: 'admin',
-    });
+    if (password === passwordConfirm) {
+      const { user } = await createUserWithEmailAndPassword(auth, email, password);
+      await setDoc(doc(db, 'users', user.uid), {
+        uid: user.uid,
+        email: user.email,
+        name,
+        createdAt: new Date(),
+        status: 'pending',
+        role: 'admin',
+      });
+    } else {
+      throw new Error('Passwords do not match');
+    }
   } catch (err) {
     console.error(err);
     alert(err.code);
@@ -97,7 +101,7 @@ const registerLocal = async (name, email, password) => {
 };
 const sendPasswordReset = async (email) => {
   try {
-    sendPasswordResetEmail(email);
+    sendPasswordResetEmail(auth, email);
     alert('Password reset link sent!');
   } catch (err) {
     console.error(err);

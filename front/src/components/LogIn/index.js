@@ -18,7 +18,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import GoogleIcon from '@mui/icons-material/Google';
 
 // FIREBASE IMPORTS
-import { auth, registerLocal, signInWithGoogle } from '../../firebase';
+import { auth, signInLocal, signInWithGoogle } from '../../firebase';
 
 function LogIn() {
   // Firebase Auth State & History Hooks
@@ -39,7 +39,7 @@ function LogIn() {
       return;
     }
     console.log(user);
-    // if (user) history.replace('/dashboard');
+    // if (user) history.replace('/rf-dashboard');
   }, [user, loading]);
 
   return (
@@ -92,7 +92,7 @@ function LogIn() {
       <Button
         type="submit"
         variant="contained"
-        onClick={() => registerLocal('Robin', values.email, values.password)}
+        onClick={() => signInLocal(values.email, values.password)}
       >
         Se connecter
       </Button>
