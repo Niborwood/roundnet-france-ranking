@@ -79,7 +79,6 @@ const signInLocal = async (email, password) => {
   }
 };
 const registerLocal = async (name, email, password) => {
-  console.log(email, password);
   try {
     const { user } = await createUserWithEmailAndPassword(auth, email, password);
     await setDoc(doc(db, 'users', user.uid), {
