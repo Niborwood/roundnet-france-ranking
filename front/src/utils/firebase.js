@@ -76,9 +76,24 @@ const signInWithGoogle = async (setErrors, errors) => {
 };
 
 // Try and sign in the user
-const signInLocal = async (setErrors, errors, email, password) => {
+const signInLocal = async (setErrors, errors, values) => {
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    const { email, password } = values;
+    let isValid = true;
+
+    if (email === '' || password === '') {
+      setErrors({
+        ...errors,
+        email: email === '' ? errorTexts.mandatory : '',
+        password: password === '' ? errorTexts.mandatory : '',
+      });
+      isValid = false;
+    }
+
+    // If no errors, sign in
+    if (isValid) {
+      await signInWithEmailAndPassword(auth, email, password);
+    }
   } catch (err) {
     // Handle Errors here
     switch (err.code) {
@@ -114,9 +129,49 @@ const signInLocal = async (setErrors, errors, email, password) => {
 };
 
 // Try and register the user
-const registerLocal = async (setErrors, errors, email, password, name, club) => {
+const registerLocal = async (setErrors, errors, values) => {
   try {
-    const { user } = await createUserWithEmailAndPassword(auth, email, password);
+    let isValid = true;
+
+    const {
+      email, name, password, passwordConfirm, club,
+    } = values;
+
+    // Check if all fields are filled
+    if (
+      email === ''
+      || name === ''
+      || password === ''
+      || passwordConfirm === ''
+      || club === ''
+    ) {
+      setErrors({
+        email: email === '' ? errorTexts.mandatory : '',
+        name: name === '' ? errorTexts.mandatory : '',
+        password: password === '' ? errorTexts.mandatory : '',
+        passwordConfirm: passwordConfirm === '' ? errorTexts.mandatory : '',
+        club: club === '' ? errorTexts.mandatory : '',
+      });
+      isValid = false;
+    }
+
+    // Check if password and passwordConfirm match
+    if (password !== passwordConfirm) {
+      setErrors({
+        ...errors,
+        password: errorTexts.passwords,
+        passwordConfirm: errorTexts.passwords,
+      });
+      isValid = false;
+    }
+
+    // If all is well, register the user (some errors might be thrown by Firebase)
+    let user;
+    if (isValid) {
+      const { user: firebaseUser } = await createUserWithEmailAndPassword(auth, email, password);
+      user = firebaseUser;
+    }
+
     await setDoc(doc(db, 'users', user.uid), {
       uid: user.uid,
       email: user.email,
@@ -138,7 +193,7 @@ const registerLocal = async (setErrors, errors, email, password, name, club) => 
       case 'auth/invalid-email':
         setErrors({
           ...errors,
-          email: 'Cette adresse email est invalide.',
+          email: errorTexts.invalidEmail,
         });
         break;
 
@@ -157,13 +212,39 @@ const registerLocal = async (setErrors, errors, email, password, name, club) => 
     }
   }
 };
-const sendPasswordReset = async (email) => {
+const sendPasswordReset = async (setEmailSent, setErrors, errors, email) => {
   try {
-    sendPasswordResetEmail(auth, email);
-    alert('Password reset link sent!');
+    await sendPasswordResetEmail(auth, email);
+    setEmailSent(true);
   } catch (err) {
-    console.error(err);
-    alert(err.message);
+    switch (err.code) {
+      case 'auth/invalid-email':
+        setErrors({
+          ...errors,
+          email: errorTexts.invalidEmail,
+        });
+        break;
+
+      case 'auth/missing-email':
+        setErrors({
+          ...errors,
+          email: errorTexts.invalidEmail,
+        });
+        break;
+
+      case 'auth/user-not-found':
+        setErrors({
+          ...errors,
+          email: 'Cette adresse email n\'est pas enregistrée.',
+        });
+        break;
+
+      default:
+        setErrors({
+          ...errors,
+          email: 'Une erreur est survenue.',
+        });
+    }
   }
 };
 const userLogout = () => {

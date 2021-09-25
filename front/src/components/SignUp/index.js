@@ -26,6 +26,7 @@ function SignUp() {
   const [user, loading, error] = useAuthState(auth);
   const history = useHistory();
 
+  // Redirections and global errors
   useEffect(() => {
     // If error, redirect to general error page
     if (error) {
@@ -59,48 +60,6 @@ function SignUp() {
     passwordConfirm: '',
     club: '',
   });
-
-  // Check on Front and register function
-  const checkAndRegister = async () => {
-    let isValid = true;
-
-    const {
-      email, name, password, passwordConfirm, club,
-    } = values;
-
-    // Check if all fields are filled
-    if (
-      email === ''
-      || name === ''
-      || password === ''
-      || passwordConfirm === ''
-      || club === ''
-    ) {
-      setErrors({
-        email: email === '' ? errorTexts.mandatory : '',
-        name: name === '' ? errorTexts.mandatory : '',
-        password: password === '' ? errorTexts.mandatory : '',
-        passwordConfirm: passwordConfirm === '' ? errorTexts.mandatory : '',
-        club: club === '' ? errorTexts.mandatory : '',
-      });
-      isValid = false;
-    }
-
-    // Check if password and passwordConfirm match
-    if (password !== passwordConfirm) {
-      setErrors({
-        ...errors,
-        password: errorTexts.passwords,
-        passwordConfirm: errorTexts.passwords,
-      });
-      isValid = false;
-    }
-
-    // If all is well, register the user (some errors might be thrown by Firebase)
-    if (isValid) {
-      registerLocal(setErrors, errors, email, password, name, club);
-    }
-  };
 
   return (
     <>
@@ -192,7 +151,7 @@ function SignUp() {
 
       {/* Submit button */}
       <Button
-        onClick={checkAndRegister}
+        onClick={() => registerLocal(setErrors, errors, values)}
         variant="contained"
       >
         Créer un compte

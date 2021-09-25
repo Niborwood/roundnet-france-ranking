@@ -20,7 +20,6 @@ import GoogleIcon from '@mui/icons-material/Google';
 
 // FIREBASE IMPORTS
 import { auth, signInLocal, signInWithGoogle } from '../../utils/firebase';
-import errorTexts from '../../utils/errorTexts';
 
 function LogIn() {
   // Firebase Auth State & History Hooks
@@ -56,26 +55,6 @@ function LogIn() {
     password: '',
   };
   const [errors, setErrors] = useState(initialErrors);
-
-  // Check function on form submit
-  const checkAndSignIn = () => {
-    const { email, password } = values;
-    let isValid = true;
-
-    if (email === '' || password === '') {
-      setErrors({
-        ...errors,
-        email: email === '' ? errorTexts.mandatory : '',
-        password: password === '' ? errorTexts.mandatory : '',
-      });
-      isValid = false;
-    }
-
-    // If no errors, sign in
-    if (isValid) {
-      signInLocal(setErrors, errors, email, password);
-    }
-  };
 
   return (
     <>
@@ -143,7 +122,7 @@ function LogIn() {
       <Button
         type="submit"
         variant="contained"
-        onClick={checkAndSignIn}
+        onClick={() => signInLocal(setErrors, errors, values)}
       >
         Se connecter
       </Button>
