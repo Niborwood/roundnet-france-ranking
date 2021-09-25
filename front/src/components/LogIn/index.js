@@ -33,11 +33,11 @@ function LogIn() {
     }
 
     if (loading) {
+      console.log('loading...');
       // maybe trigger a loading screen
       return;
     }
-    console.log(user);
-    // if (user) history.replace('/rf-dashboard');
+    if (user) history.replace('/rf-dashboard');
   }, [user, loading]);
 
   // Controlled inputs

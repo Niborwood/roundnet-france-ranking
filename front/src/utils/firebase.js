@@ -255,7 +255,7 @@ const sendPasswordReset = async (setLoadMail, setEmailSent, setErrors, errors, e
 
 // Log Out the user
 const userLogout = () => {
-  signOut();
+  signOut(auth);
 };
 
 // Export all functions

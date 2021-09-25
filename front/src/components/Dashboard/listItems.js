@@ -1,16 +1,25 @@
 import * as React from 'react';
+
+// MUI IMPORTS
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
+
+// MUI ICONS IMPORTS
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import LogoutIcon from '@mui/icons-material/LogoutRounded';
+import SettingsIcon from '@mui/icons-material/Settings';
+
+// FIREBASE IMPORTS
+import { userLogout } from '../../utils/firebase';
 
 export const mainListItems = (
   <div>
+    <ListSubheader inset sx={{ display: { xs: 'none', md: 'inherit' } }}>Administration</ListSubheader>
     <ListItem button>
       <ListItemIcon>
         <DashboardIcon />
@@ -40,24 +49,18 @@ export const mainListItems = (
 
 export const secondaryListItems = (
   <div>
-    <ListSubheader inset>Saved reports</ListSubheader>
+    <ListSubheader inset sx={{ display: { xs: 'none', md: 'inherit' } }}>Compte</ListSubheader>
     <ListItem button>
       <ListItemIcon>
-        <AssignmentIcon />
+        <SettingsIcon />
       </ListItemIcon>
-      <ListItemText primary="Current month" />
+      <ListItemText primary="Paramètres" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
-        <AssignmentIcon />
+        <LogoutIcon />
       </ListItemIcon>
-      <ListItemText primary="Last quarter" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
+      <ListItemText onClick={userLogout} primary="Se déconnecter" />
     </ListItem>
   </div>
 );
