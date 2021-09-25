@@ -37,6 +37,7 @@ const muiTheme = createTheme(
         main: '#f50057',
         dark: '#cf0051',
       },
+      white: '#ffffff',
     },
   },
   frFR,

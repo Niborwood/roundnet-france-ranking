@@ -212,11 +212,16 @@ const registerLocal = async (setErrors, errors, values) => {
     }
   }
 };
-const sendPasswordReset = async (setEmailSent, setErrors, errors, email) => {
+
+// Reset Password with email
+const sendPasswordReset = async (setLoadMail, setEmailSent, setErrors, errors, email) => {
   try {
+    setLoadMail(true);
     await sendPasswordResetEmail(auth, email);
+    setLoadMail(false);
     setEmailSent(true);
   } catch (err) {
+    setLoadMail(false);
     switch (err.code) {
       case 'auth/invalid-email':
         setErrors({
@@ -247,9 +252,13 @@ const sendPasswordReset = async (setEmailSent, setErrors, errors, email) => {
     }
   }
 };
+
+// Log Out the user
 const userLogout = () => {
   signOut();
 };
+
+// Export all functions
 export {
   auth,
   db,

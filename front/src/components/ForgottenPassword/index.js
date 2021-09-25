@@ -10,6 +10,7 @@ import Link from '@mui/material/Link';
 import Divider from '@mui/material/Divider';
 import InputAdornment from '@mui/material/InputAdornment';
 import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
 
 // MUI ICONS IMPORTS
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -44,6 +45,7 @@ function ForgottenPassword() {
     global: '',
     email: '',
   });
+  const [loadMail, setLoadMail] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
 
   return (
@@ -70,25 +72,26 @@ function ForgottenPassword() {
         }}
       />
 
-      {/* Validation Alert */}
-      {emailSent && (
+      {/* Validation Alert || Button to send */}
+      {emailSent ? (
         <Alert severity="success">
           Un email de réinitialisation a bien été envoyé à l&apos;adresse
           {' '}
           <strong>{values.email}</strong>
           .
-
         </Alert>
-      )}
-
-      {/* Submit button */}
-      <Button
-        type="submit"
-        variant="contained"
-        onClick={() => sendPasswordReset(setEmailSent, setErrors, errors, values.email)}
-      >
-        M&apos;envoyer un email de récupération
-      </Button>
+      )
+        : (
+          <Button
+            type="submit"
+            variant="contained"
+            onClick={() => sendPasswordReset(
+              setLoadMail, setEmailSent, setErrors, errors, values.email,
+            )}
+          >
+            {loadMail ? (<CircularProgress size="1.5rem" color="white" />) : 'M\'envoyer un email de récupération'}
+          </Button>
+        )}
 
       <Divider />
 
