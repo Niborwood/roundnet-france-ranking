@@ -20,6 +20,9 @@ import {
   getDoc,
 } from 'firebase/firestore';
 
+// IMPORT ERROR TEXTS
+import errorTexts from './errorTexts';
+
 // import { getAnalytics } from 'firebase/analytics';
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -70,33 +73,87 @@ const signInWithGoogle = async () => {
     console.error(errorCode, errorMessage);
   }
 };
-const signInLocal = async (email, password) => {
-  console.log(email, password);
+
+// Try and sign in the user
+const signInLocal = async (setErrors, errors, email, password) => {
   try {
-    signInWithEmailAndPassword(auth, email, password);
+    await signInWithEmailAndPassword(auth, email, password);
   } catch (err) {
-    console.error(err.code);
-    alert(err.code);
+    // Handle Errors here
+    switch (err.code) {
+      case 'auth/invalid-email':
+        setErrors({
+          ...errors,
+          global: errorTexts.failedSignIn,
+        });
+        break;
+
+      case 'auth/user-not-found':
+        setErrors({
+          ...errors,
+          global: errorTexts.failedSignIn,
+        });
+        break;
+
+      case 'auth/wrong-password':
+        setErrors({
+          ...errors,
+          global: errorTexts.failedSignIn,
+        });
+        break;
+
+      default:
+        setErrors({
+          ...errors,
+          global: 'Une erreur inconnue est survenue.',
+        });
+        break;
+    }
   }
 };
-const registerLocal = async (email, name, club, password, passwordConfirm) => {
+
+// Try and register the user
+const registerLocal = async (setErrors, errors, email, password, name, club) => {
   try {
-    if (password === passwordConfirm) {
-      const { user } = await createUserWithEmailAndPassword(auth, email, password);
-      await setDoc(doc(db, 'users', user.uid), {
-        uid: user.uid,
-        email: user.email,
-        name,
-        createdAt: new Date(),
-        status: 'pending',
-        role: 'admin',
-      });
-    } else {
-      throw new Error('Passwords do not match');
-    }
+    const { user } = await createUserWithEmailAndPassword(auth, email, password);
+    await setDoc(doc(db, 'users', user.uid), {
+      uid: user.uid,
+      email: user.email,
+      name,
+      club,
+      createdAt: new Date(),
+      status: 'pending',
+      role: 'admin',
+    });
   } catch (err) {
-    console.error(err);
-    alert(err.code);
+    switch (err.code) {
+      case 'auth/email-already-in-use':
+        setErrors({
+          ...errors,
+          email: 'Cette adresse email est déjà utilisée.',
+        });
+        break;
+
+      case 'auth/invalid-email':
+        setErrors({
+          ...errors,
+          email: 'Cette adresse email est invalide.',
+        });
+        break;
+
+      case 'auth/weak-password':
+        setErrors({
+          ...errors,
+          password: 'Le mot de passe doit faire plus de 6 charactères.',
+        });
+        break;
+
+      default:
+        setErrors({
+          ...errors,
+          email: 'Une erreur est survenue. Veuillez essayer avec un autre email.',
+        });
+    }
   }
 };
 const sendPasswordReset = async (email) => {
@@ -109,7 +166,7 @@ const sendPasswordReset = async (email) => {
   }
 };
 const userLogout = () => {
-  auth.signOut();
+  signOut();
 };
 export {
   auth,
@@ -118,7 +175,7 @@ export {
   signInLocal,
   registerLocal,
   sendPasswordReset,
-  signOut,
+  userLogout,
 };
 
 // const analytics = getAnalytics(app);

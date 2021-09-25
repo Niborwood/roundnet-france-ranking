@@ -19,6 +19,7 @@ import SignInWrapper from '../SignInWrapper';
 import LogIn from '../LogIn';
 import SignUp from '../SignUp';
 import ForgottenPassword from '../ForgottenPassword';
+import SignInError from '../SignInError';
 
 // DASHBOARD
 import Dashboard from '../Dashboard';
@@ -57,6 +58,13 @@ function App() {
         <Route exact path="/rf-pwd-forgotten">
           <SignInWrapper title="Mot de passe oublié">
             <ForgottenPassword />
+          </SignInWrapper>
+        </Route>
+
+        {/* ERROR SIGN IN API */}
+        <Route exact path="/rf-error">
+          <SignInWrapper title="Erreur">
+            <SignInError />
           </SignInWrapper>
         </Route>
 

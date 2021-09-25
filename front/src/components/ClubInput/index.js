@@ -1,15 +1,18 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 // MUI IMPORTS
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { useQuery, gql } from '@apollo/client';
 
-function ClubInput() {
+function ClubInput({
+  values, setValues, errors, setErrors,
+}) {
   // Controlled input and value
-  const [value, setValue] = useState(null);
   const filter = createFilterOptions();
+  const value = values.club;
 
   // Query to get clubs
   const GET_CLUBS = gql`
@@ -19,26 +22,27 @@ function ClubInput() {
       }
     }
   `;
-  const { data, loading } = useQuery(GET_CLUBS);
+  const { data, loading, error: queryError } = useQuery(GET_CLUBS);
   const clubs = data?.clubs;
 
   return (
-    loading ? null : (
+    queryError ? (
+      <div>Un problème est survenu dans la récupération des clubs.</div>
+    ) : (
       <Autocomplete
         id="club-account"
         value={value}
         onChange={(event, newValue) => {
-          if (typeof newValue === 'string') {
-            setValue({
-              name: newValue,
-            });
-          } else if (newValue && newValue.inputValue) {
+          if (newValue && newValue.inputValue) {
             // Create a new value from the user input
-            setValue({
-              name: newValue.inputValue,
+            setErrors({ ...errors, club: '' });
+            setValues({
+              ...values,
+              club: newValue.inputValue,
             });
           } else {
-            setValue(newValue);
+            setErrors({ ...errors, club: '' });
+            setValues({ ...values, club: newValue?.name || '' });
           }
         }}
         filterOptions={(options, params) => {
@@ -59,7 +63,7 @@ function ClubInput() {
         selectOnFocus
         clearOnBlur
         handleHomeEndKeys
-        options={clubs}
+        options={clubs || []}
         getOptionLabel={(option) => {
           // Value selected with enter, right from the input
           if (typeof option === 'string') {
@@ -72,15 +76,33 @@ function ClubInput() {
           // Regular option
           return option.name;
         }}
-        renderOption={(props, option) => <li {...props}>{option.name}</li>}
-        sx={{ width: '100%', height: '100%' }}
+        renderOption={
+          (props, option) => (
+            <li {...props}>{loading ? 'Chargement...' : option.name}</li>)
+        }
         freeSolo
         renderInput={(params) => (
-          <TextField {...params} label="Club" />
+          <TextField
+            error={errors.club !== ''}
+            helperText={errors.club}
+            {...params}
+            label="Club"
+          />
         )}
       />
     )
   );
 }
+
+ClubInput.propTypes = {
+  values: PropTypes.shape({
+    club: PropTypes.string,
+  }).isRequired,
+  setValues: PropTypes.func.isRequired,
+  errors: PropTypes.shape({
+    club: PropTypes.string,
+  }).isRequired,
+  setErrors: PropTypes.func.isRequired,
+};
 
 export default ClubInput;
