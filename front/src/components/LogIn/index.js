@@ -33,7 +33,6 @@ function LogIn() {
     }
 
     if (loading) {
-      console.log('loading...');
       // maybe trigger a loading screen
       return;
     }

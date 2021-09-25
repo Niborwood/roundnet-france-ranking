@@ -1,4 +1,13 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import {
+  getFirestore,
+  doc,
+  getDoc,
+} from 'firebase/firestore';
+import { useHistory } from 'react-router-dom';
+
+// MUI IMPORTS
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -13,6 +22,8 @@ import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+
+// MUI ICONS IMPORTS
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -20,6 +31,8 @@ import { mainListItems, secondaryListItems } from './listItems';
 // import Chart from './Chart';
 // import Deposits from './Deposits';
 import Orders from './Orders';
+
+import { auth } from '../../utils/firebase';
 
 const drawerWidth = 240;
 
@@ -70,6 +83,28 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme();
 
 function DashboardContent() {
+  // Firebase user state
+  const history = useHistory();
+  const db = getFirestore();
+  const [userAuth, loading] = useAuthState(auth);
+  const [user, setUser] = useState(null);
+
+  useEffect(async () => {
+    if (loading) {
+      return;
+    }
+
+    if (!userAuth) {
+      history.replace('/rf-admin');
+    } else {
+      const userRef = doc(db, `users/${userAuth.uid}`);
+      const userSnap = await getDoc(userRef);
+      setUser(userSnap.data());
+      console.log(user);
+    }
+  }, [userAuth, loading]);
+
+  // State for the drawer
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -104,7 +139,9 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Roundnet Paris Ranking - Dashboard
+              Dashboard -
+              {' '}
+              {user?.displayName}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">

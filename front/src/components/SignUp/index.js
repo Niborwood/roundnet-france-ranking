@@ -16,7 +16,6 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 // FIREBASE AUTH IMPORT
 import { auth, registerLocal } from '../../utils/firebase';
-import errorTexts from '../../utils/errorTexts';
 
 // COMPONENTS IMPORTS
 import ClubInput from '../ClubInput';
