@@ -154,7 +154,7 @@ function LogIn() {
         startIcon={<GoogleIcon />}
         type="button"
         variant="outlined"
-        onClick={signInWithGoogle}
+        onClick={() => signInWithGoogle(setErrors, errors)}
       >
         Se connecter avec Google
       </Button>

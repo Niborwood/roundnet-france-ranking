@@ -46,7 +46,7 @@ const db = getFirestore();
 // Add methods to the Firebase SDK
 const googleProvider = new GoogleAuthProvider();
 
-const signInWithGoogle = async () => {
+const signInWithGoogle = async (setErrors, errors) => {
   try {
     // Use the popup to sign in the user
     const { user } = await signInWithPopup(auth, googleProvider);
@@ -67,10 +67,11 @@ const signInWithGoogle = async () => {
         role: 'admin',
       });
     }
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.error(errorCode, errorMessage);
+  } catch (err) {
+    setErrors({
+      ...errors,
+      global: errorTexts.signInWithGoogle,
+    });
   }
 };
 
