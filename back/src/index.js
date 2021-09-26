@@ -53,35 +53,6 @@ const resolvers = {
       return clubs;
     }
   },
-  // Mutation: {
-  //   // Add Link
-  //   post: (parent, args, context, info) => {
-  //     const newLink = context.prisma.link.create({
-  //       data: {
-  //         url: args.url,
-  //         description: args.description,
-  //       }
-  //     })
-  //     return newLink;
-  //   },
-  // updateLink: (parent, args) => {
-  //   const newLink = {
-  //     id: args.id,
-  //     description: args.description,
-  //     url: args.url,
-  //   };
-
-  //   const index = links.findIndex(link => link.id === newLink.id);
-  //   links[index] = newLink;
-  //   return newLink;
-  // },
-  // deleteLink: (parent, args) => {
-  //   const index = links.findIndex(link => link.id === args.id);
-  //   if (index > -1) {
-  //     links.splice(index, 1);
-  //   }
-  // },
-  // },
 }
 
 // SERVER

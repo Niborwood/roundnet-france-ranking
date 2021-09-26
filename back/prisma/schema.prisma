@@ -35,8 +35,8 @@ model Tournament {
   place        Place?               @relation(fields: [placeId], references: [id])
   placeId      Int?
   players      PlayerOnTournament[]
-  admin        User?                @relation(fields: [userId], references: [id])
-  userId       Int?
+  admin        User?                @relation(fields: [adminId], references: [id])
+  adminId      Int?
 }
 
 model PlayerOnTournament {
