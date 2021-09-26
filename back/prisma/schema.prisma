@@ -15,7 +15,7 @@ generator client {
 // MODELS
 model Player {
   id          Int                  @id @default(autoincrement())
-  euraId     Int?                 @unique
+  euraId      Int?                 @unique
   createdAt   DateTime             @default(now())
   updatedAt   DateTime?
   name        String
@@ -35,6 +35,8 @@ model Tournament {
   place        Place?               @relation(fields: [placeId], references: [id])
   placeId      Int?
   players      PlayerOnTournament[]
+  admin        User?                @relation(fields: [userId], references: [id])
+  userId       Int?
 }
 
 model PlayerOnTournament {
@@ -70,5 +72,17 @@ model Club {
   createdAt DateTime  @default(now())
   updatedAt DateTime?
   name      String    @unique
-  players   Player[]
+  members   Player[]
+  admins    User[]
+}
+
+model User {
+  id          Int          @id @default(autoincrement())
+  uid         String       @unique
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime?
+  email       String       @unique
+  club        Club?        @relation(fields: [clubId], references: [id])
+  clubId      Int?
+  tournaments Tournament[]
 }
