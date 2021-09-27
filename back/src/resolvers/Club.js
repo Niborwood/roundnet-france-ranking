@@ -7,6 +7,14 @@ const members = async (parent, args, context) => {
   return members;
 }
 
+const admins = async (parent, args, context) => {
+  const admins = await context.prisma.club.findUnique({
+    where: { id: parent.id }
+  }).admins();
+  return admins;
+}
+
 module.exports = {
-  members
+  members,
+  admins
 }

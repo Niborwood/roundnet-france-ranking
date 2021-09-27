@@ -47,6 +47,7 @@ type Club {
   id: ID!
   name: String!
   members: [Player]
+  admins: [User!]!
 }
 
 type User {
