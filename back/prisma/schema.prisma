@@ -32,6 +32,7 @@ model Tournament {
   name         String
   date         String
   participants Int
+  // Relations
   place        Place?               @relation(fields: [placeId], references: [id])
   placeId      Int?
   players      PlayerOnTournament[]

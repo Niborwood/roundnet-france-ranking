@@ -6,54 +6,11 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 // RESOLVERS
+const Query = require('../resolvers/Query');
+
 const resolvers = {
-  Query: {
-    // GENERAL API INFO
-    info: () => `This is the API of Roundnet France Ranking`,
-
-    // RANKING ALGORITHM
-    ranking: async (parent, args, context) => {
-      const rankingRaw = await context.prisma.playerOnTournament.groupBy({
-        by: ['playerId'],
-        _sum: {
-          points: true,
-        },
-        orderBy: {
-          _sum: {
-            points: 'desc',
-          }
-        }
-      });
-    
-
-      // Retrieving the player's info
-      const playersData = await context.prisma.player.findMany();
-
-      // Merging rankingRaw with playersData
-      const ranking = rankingRaw.map((player, index) => {
-        const playerInfo = playersData.find(p => p.id === player.playerId);
-        return {
-          playerId: player.playerId,
-          points: player._sum.points,
-          rank: index + 1,
-          player: playerInfo,
-        };
-      });
-
-      return ranking;
-    },
-
-    // GET CLUBS 
-    clubs: async (parent, args, context) => {
-      const clubs = await context.prisma.club.findMany({
-        include: {
-          players: true,
-        },
-      });
-      return clubs;
-    }
-  },
-}
+  Query,
+};
 
 // SERVER
 const server = new ApolloServer({
