@@ -20,6 +20,7 @@ model Player {
   updatedAt   DateTime?
   name        String
   surname     String
+  // RELATIONS
   tournaments PlayerOnTournament[]
   club        Club?                @relation(fields: [clubId], references: [id])
   clubId      Int?
@@ -32,7 +33,7 @@ model Tournament {
   name         String
   date         String
   participants Int
-  // Relations
+  // RELATIONS
   place        Place?               @relation(fields: [placeId], references: [id])
   placeId      Int?
   players      PlayerOnTournament[]
@@ -42,14 +43,16 @@ model Tournament {
 
 model PlayerOnTournament {
   id           Int        @id @default(autoincrement())
+  rank         Int
+  points       Int
+  // RELATIONS
   player       Player     @relation(fields: [playerId], references: [id])
   playerId     Int
   tournament   Tournament @relation(fields: [tournamentId], references: [id])
   tournamentId Int
   team         Team?      @relation(fields: [teamId], references: [id])
   teamId       Int?
-  rank         Int
-  points       Int
+
 }
 
 model Place {
@@ -57,6 +60,7 @@ model Place {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime?
   name        String
+  // RELATIONS
   tournaments Tournament[]
 }
 
@@ -65,6 +69,7 @@ model Team {
   createdAt DateTime             @default(now())
   updatedAt DateTime?
   name      String               @unique
+  // RELATIONS
   players   PlayerOnTournament[]
 }
 
@@ -73,6 +78,7 @@ model Club {
   createdAt DateTime  @default(now())
   updatedAt DateTime?
   name      String    @unique
+  // RELATIONS
   members   Player[]
   admins    User[]
 }
@@ -82,8 +88,19 @@ model User {
   uid         String       @unique
   createdAt   DateTime     @default(now())
   updatedAt   DateTime?
+  name        String
   email       String       @unique
+  verified    Boolean      @default(false)
+  role        Role         @default(READONLY)
+  // RELATIONS
   club        Club?        @relation(fields: [clubId], references: [id])
   clubId      Int?
   tournaments Tournament[]
 }
+
+enum Role {
+  ADMIN
+  USER
+  READONLY
+}
+

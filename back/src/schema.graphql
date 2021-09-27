@@ -1,69 +1,82 @@
 # QUERIES
 type Query {
-    info: String!
-    ranking: [PlayerOnTournament!]!
-    clubs: [Club!]!
+  info: String!
+  ranking: [PlayerOnTournament!]!
+  clubs: [Club!]!
 }
 
 # MODELS
 type PlayerOnTournament {
-    id: ID!
-    playerId: Int!
-    rank: Int!
-    points: Int!
-    place: Place!
-    player: Player!
-    team: Team
+  id: ID!
+  playerId: Int!
+  rank: Int!
+  points: Int!
+  place: Place!
+  player: Player!
+  team: Team
 }
 
 type Player {
-    id: ID!
-    name: String!
-    surname: String! 
+  id: ID!
+  name: String!
+  surname: String!
+  tournaments: [Tournament]
 }
 
 type Tournament {
-    id: ID!
-    name: String!
-    date: String!
-    participants: Int!
-    place: Place!
-    players: [PlayerOnTournament!]!
-    admin: User
+  id: ID!
+  name: String!
+  date: String!
+  participants: Int!
+  place: Place!
+  players: [PlayerOnTournament!]!
+  admin: User
 }
 
 type Team {
-    id: ID!
-    name: String!
+  id: ID!
+  name: String!
 }
 
 type Place {
-    id: ID!
-    name: String!
+  id: ID!
+  name: String!
 }
 
 type Club {
-    id: ID!
-    name: String!
-    members: [Player]
+  id: ID!
+  name: String!
+  members: [Player]
 }
 
 type User {
-    id: ID!
-    uid: String!
-    name: String!
-    email: String!
-    club: Club
-    tournaments: [Tournament]
+  id: ID!
+  uid: String!
+  name: String!
+  email: String!
+  role: String!
+  verified: Boolean!
+  club: Club
+  tournaments: [Tournament]
 }
 
-# # MUTATIONS 
-# type Mutation {
-#     signup(email: String!, uid: String!, name: String!, club:Club): AuthPayload
-#     login(email: String!, uid: String!): AuthPayload
-# }
 
-# type AuthPayload {
-#     token: String
-#     user: User
-# }
+# MUTATIONS 
+type Mutation {
+  # Sign Up / Login
+  signup(email: String!, uid: String!, name: String!, club:String!): AuthPayload
+  login(email: String!, uid: String!): AuthPayload
+
+  # Tournament admin
+  createTournament(
+    name: String!, 
+    date: String!, 
+    place: String!,
+    participants: Int!, 
+    ): Tournament!
+}
+
+type AuthPayload {
+  token: String
+  user: User
+}
