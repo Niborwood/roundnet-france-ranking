@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useMutation, gql } from '@apollo/client';
 
 // MUI IMPORTS
 import Button from '@mui/material/Button';
@@ -20,25 +21,13 @@ import { auth, registerLocal } from '../../utils/firebase';
 // COMPONENTS IMPORTS
 import ClubInput from '../ClubInput';
 
+// TOKEN IMPORT
+import AUTH_TOKEN from '../../constants';
+
 function SignUp() {
   // Firebase Auth
   const [user, loading, error] = useAuthState(auth);
   const history = useHistory();
-
-  // Redirections and global errors
-  useEffect(() => {
-    // If error, redirect to general error page
-    if (error) {
-      history.push('/rf-error');
-    }
-
-    if (loading) {
-      // maybe trigger a loading screen
-      return;
-    }
-    console.log(user);
-    // if (user) history.replace('/rf-dashboard');
-  }, [user, loading]);
 
   // Controlled inputs
   const [values, setValues] = useState({
@@ -60,6 +49,60 @@ function SignUp() {
     club: '',
   });
 
+  // signUp mutation setup and function
+  const SIGNUP_MUTATION = gql`
+    mutation SignUpUser(
+      $signupEmail: String!, 
+      $signupUid: String!, 
+      $signupName: String!, 
+      $signupClub: String!) {
+        signup(
+          email: $signupEmail, 
+          uid: $signupUid, 
+          name: $signupName, 
+          club: $signupClub) {
+            token
+            user {
+              uid
+              name
+              email
+              role
+              verified
+              club {
+                name
+              }
+            }
+        }
+    }
+  `;
+
+  const [signUp, { error: errorApollo }] = useMutation(SIGNUP_MUTATION, {
+    onCompleted: ({ signup }) => {
+      localStorage.setItem(AUTH_TOKEN, signup.token);
+      history.push('/');
+    },
+  });
+
+  // Redirections and global errors
+  useEffect(() => {
+    // If error, redirect to general error page
+    if (error) {
+      history.push('/rf-error');
+    }
+
+    if (errorApollo) {
+      console.log('error Apollo', JSON.stringify(errorApollo, null, 2));
+    }
+
+    if (loading) {
+      // maybe trigger a loading screen
+      return;
+    }
+    console.log(user);
+    // if (user) history.replace('/rf-dashboard');
+  }, [user, loading, errorApollo]);
+
+  // JSX RETURN
   return (
     <>
       {/* Email Input */}
@@ -150,7 +193,9 @@ function SignUp() {
 
       {/* Submit button */}
       <Button
-        onClick={() => registerLocal(setErrors, errors, values)}
+        onClick={() => {
+          registerLocal(setErrors, errors, values, signUp);
+        }}
         variant="contained"
       >
         Créer un compte

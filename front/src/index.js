@@ -55,15 +55,15 @@ const client = new ApolloClient({
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider client={client}>
-      <ThemeProvider theme={muiTheme}>
-        <Router>
+    <Router>
+      <ApolloProvider client={client}>
+        <ThemeProvider theme={muiTheme}>
           <CssBaseline>
             <App />
           </CssBaseline>
-        </Router>
-      </ThemeProvider>
-    </ApolloProvider>
+        </ThemeProvider>
+      </ApolloProvider>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root'),
 );

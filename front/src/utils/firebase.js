@@ -38,7 +38,7 @@ const firebaseConfig = {
   // measurementId: 'G-R5G890WRM4',
 };
 
-// Initialize Firebase
+// Initialize Firebase & React Router DOM
 initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore();
@@ -75,7 +75,7 @@ const signInWithGoogle = async (setErrors, errors) => {
   }
 };
 
-// Try and sign in the user
+// Try and sign in the user with email and password
 const signInLocal = async (setErrors, errors, values) => {
   try {
     const { email, password } = values;
@@ -128,8 +128,8 @@ const signInLocal = async (setErrors, errors, values) => {
   }
 };
 
-// Try and register the user
-const registerLocal = async (setErrors, errors, values) => {
+// Try and register the user with email and password
+const registerLocal = async (setErrors, errors, values, signUp) => {
   try {
     let isValid = true;
 
@@ -172,15 +172,17 @@ const registerLocal = async (setErrors, errors, values) => {
       user = firebaseUser;
     }
 
-    await setDoc(doc(db, 'users', user.uid), {
-      uid: user.uid,
-      email: user.email,
-      name,
-      club,
-      createdAt: new Date(),
-      status: 'pending',
-      role: 'admin',
-    });
+    // If user is created, add user to the API database
+    if (user) {
+      signUp({
+        variables: {
+          signupUid: user.uid,
+          signupEmail: email,
+          signupName: name,
+          signupClub: club,
+        },
+      });
+    }
   } catch (err) {
     switch (err.code) {
       case 'auth/email-already-in-use':
