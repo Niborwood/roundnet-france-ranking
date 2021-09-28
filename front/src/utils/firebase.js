@@ -182,6 +182,8 @@ const registerLocal = async (setErrors, errors, values, signUp) => {
           signupClub: club,
         },
       });
+    } else {
+      throw new Error('api/error');
     }
   } catch (err) {
     switch (err.code) {
@@ -203,6 +205,13 @@ const registerLocal = async (setErrors, errors, values, signUp) => {
         setErrors({
           ...errors,
           password: 'Le mot de passe doit faire plus de 6 charactères.',
+        });
+        break;
+
+      case 'api/error':
+        setErrors({
+          ...errors,
+          global: 'Une erreur inconnue est survenue. Merci d\'en notifier support@roundnet-france.fr',
         });
         break;
 

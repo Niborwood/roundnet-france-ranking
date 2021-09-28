@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 
 // MUI IMPORTS
 import Button from '@mui/material/Button';
@@ -20,6 +20,9 @@ import { auth, registerLocal } from '../../utils/firebase';
 
 // COMPONENTS IMPORTS
 import ClubInput from '../ClubInput';
+
+// GQL IMPORT
+import { SIGNUP_MUTATION } from '../../graphQl';
 
 // TOKEN IMPORT
 import AUTH_TOKEN from '../../constants';
@@ -50,48 +53,18 @@ function SignUp() {
   });
 
   // signUp mutation setup and function
-  const SIGNUP_MUTATION = gql`
-    mutation SignUpUser(
-      $signupEmail: String!, 
-      $signupUid: String!, 
-      $signupName: String!, 
-      $signupClub: String!) {
-        signup(
-          email: $signupEmail, 
-          uid: $signupUid, 
-          name: $signupName, 
-          club: $signupClub) {
-            token
-            user {
-              uid
-              name
-              email
-              role
-              verified
-              club {
-                name
-              }
-            }
-        }
-    }
-  `;
-
   const [signUp, { error: errorApollo }] = useMutation(SIGNUP_MUTATION, {
     onCompleted: ({ signup }) => {
       localStorage.setItem(AUTH_TOKEN, signup.token);
-      history.push('/');
+      history.push('/rf-dashboard');
     },
   });
 
   // Redirections and global errors
   useEffect(() => {
     // If error, redirect to general error page
-    if (error) {
+    if (error || errorApollo) {
       history.push('/rf-error');
-    }
-
-    if (errorApollo) {
-      console.log('error Apollo', JSON.stringify(errorApollo, null, 2));
     }
 
     if (loading) {
@@ -100,7 +73,7 @@ function SignUp() {
     }
     console.log(user);
     // if (user) history.replace('/rf-dashboard');
-  }, [user, loading, errorApollo]);
+  }, [user, loading, errorApollo, error]);
 
   // JSX RETURN
   return (

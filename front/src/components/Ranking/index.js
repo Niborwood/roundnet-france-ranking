@@ -39,6 +39,9 @@ import roundnetMasonry3 from '../../assets/images/ranking-masonry/roundnet-franc
 import roundnetMasonry4 from '../../assets/images/ranking-masonry/roundnet-france-ranking4.jpg';
 import roundnetMasonry6 from '../../assets/images/ranking-masonry/roundnet-france-ranking6.jpg';
 
+// GQL IMPORTS
+import { RANKING_QUERY } from '../../graphQl';
+
 function TablePaginationActions(props) {
   const theme = useTheme();
   const {
@@ -104,19 +107,6 @@ TablePaginationActions.propTypes = {
 
 function Ranking() {
   // Adding data for the table from the GraphQL API
-  const RANKING_QUERY = gql`
-    {
-      ranking {
-        playerId
-        rank
-        points
-        player {
-          name
-          surname
-        }
-      }
-    }
-  `;
   const { data, loading } = useQuery(RANKING_QUERY);
   const rankingList = data?.ranking;
 
