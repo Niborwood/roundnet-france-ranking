@@ -4,92 +4,37 @@ const path = require('path');
 const { ApolloServer } = require('apollo-server');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const { getUserId } = require('./utils');
+
 
 // RESOLVERS
+const Query = require('./resolvers/Query');
+const Mutation = require('./resolvers/Mutation');
+const User = require('./resolvers/User');
+const Tournament = require('./resolvers/Tournament');
+const Club = require('./resolvers/Club');
+
 const resolvers = {
-  Query: {
-    // GENERAL API INFO
-    info: () => `This is the API of Roundnet France Ranking`,
-
-    // RANKING ALGORITHM
-    ranking: async (parent, args, context) => {
-      const rankingRaw = await context.prisma.playerOnTournament.groupBy({
-        by: ['playerId'],
-        _sum: {
-          points: true,
-        },
-        orderBy: {
-          _sum: {
-            points: 'desc',
-          }
-        }
-      });
-    
-
-      // Retrieving the player's info
-      const playersData = await context.prisma.player.findMany();
-
-      // Merging rankingRaw with playersData
-      const ranking = rankingRaw.map((player, index) => {
-        const playerInfo = playersData.find(p => p.id === player.playerId);
-        return {
-          playerId: player.playerId,
-          points: player._sum.points,
-          rank: index + 1,
-          player: playerInfo,
-        };
-      });
-
-      return ranking;
-    },
-
-    // GET CLUBS 
-    clubs: async (parent, args, context) => {
-      const clubs = await context.prisma.club.findMany({
-        include: {
-          players: true,
-        },
-      });
-      return clubs;
-    }
-  },
-  // Mutation: {
-  //   // Add Link
-  //   post: (parent, args, context, info) => {
-  //     const newLink = context.prisma.link.create({
-  //       data: {
-  //         url: args.url,
-  //         description: args.description,
-  //       }
-  //     })
-  //     return newLink;
-  //   },
-  // updateLink: (parent, args) => {
-  //   const newLink = {
-  //     id: args.id,
-  //     description: args.description,
-  //     url: args.url,
-  //   };
-
-  //   const index = links.findIndex(link => link.id === newLink.id);
-  //   links[index] = newLink;
-  //   return newLink;
-  // },
-  // deleteLink: (parent, args) => {
-  //   const index = links.findIndex(link => link.id === args.id);
-  //   if (index > -1) {
-  //     links.splice(index, 1);
-  //   }
-  // },
-  // },
-}
+  Query,
+  Mutation,
+  User,
+  Tournament,
+  Club
+};
 
 // SERVER
 const server = new ApolloServer({
   typeDefs: fs.readFileSync(path.join(__dirname, 'schema.graphql'), 'utf8'),
   resolvers,
-  context: {
-    prisma,
+  context: ({ req }) => {
+    return {
+      ...req,
+      prisma,
+      userId:
+        req && req.headers.authorization
+          ? getUserId(req)
+          : null
+    };
   }
 })
 
