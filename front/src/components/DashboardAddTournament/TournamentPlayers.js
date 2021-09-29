@@ -17,19 +17,49 @@ import TableRow from '@mui/material/TableRow';
 // MUI ICONS IMPORTS
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
-function createData(name, calories, fat, carbs, protein) {
-  return {
-    name, calories, fat, carbs, protein,
-  };
-}
-
-const rows = [
-  createData(1, 'Robin', 'Souriau', 'Equinox'),
-  createData(1, 'Alexandre', 'Marti', 'Equinox'),
-  createData(2, 'Benoit', 'Nguyen', 'M&N'),
-  createData(2, 'Charles', 'Mordacq', 'M&N'),
-  createData(3, 'Dorian', 'Améziane', 'Pour Combien ?'),
-  createData(3, 'Robin', 'Florinda', 'Pour Combien ?'),
+const betterRows = [
+  {
+    rank: 1,
+    team: 'Equinox',
+    players: [
+      {
+        name: 'Robin',
+        surname: 'Souriau',
+      },
+      {
+        name: 'Alexandre',
+        surname: 'Marti',
+      },
+    ],
+  },
+  {
+    rank: 2,
+    team: 'M&N',
+    players: [
+      {
+        name: 'Charles',
+        surname: 'Mordacq',
+      },
+      {
+        name: 'Benoit',
+        surname: 'Nguyen',
+      },
+    ],
+  },
+  {
+    rank: 3,
+    team: 'Pour Combien ?',
+    players: [
+      {
+        name: 'Dorian',
+        surname: 'Améziane',
+      },
+      {
+        name: 'Robin',
+        surname: 'Florinda',
+      },
+    ],
+  },
 ];
 
 function TournamentPlayers({ setDetailsStep }) {
@@ -55,25 +85,33 @@ function TournamentPlayers({ setDetailsStep }) {
         <Table size="small" aria-label="Joueurs à enregistrer" stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell align="left">Rang</TableCell>
-              <TableCell>Prénom</TableCell>
-              <TableCell>Nom</TableCell>
-              <TableCell>Equipe</TableCell>
+              <TableCell sx={{ maxWidth: '70px' }}>Rang</TableCell>
+              <TableCell align="left">Equipe</TableCell>
+              <TableCell>Joueurs</TableCell>
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
+            {betterRows.map((row) => (
+
               <TableRow
                 hover
-                key={row.fat}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:nth-of-type(odd)': { border: 0 } }}
+                key={row.rank}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell component="th" scope="row">
-                  {row.name}
+                <TableCell component="th" scope="row" sx={{ maxWidth: '70px' }}>
+                  {row.rank}
                 </TableCell>
-                <TableCell>{row.calories}</TableCell>
-                <TableCell>{row.fat}</TableCell>
-                <TableCell>{row.carbs}</TableCell>
+                <TableCell>{row.team}</TableCell>
+                {row.players.map((player) => (
+                  <>
+                    <TableCell key={player.name}>
+                      {player.name}
+                      {' '}
+                      {player.surname}
+                    </TableCell>
+                  </>
+                ))}
               </TableRow>
             ))}
           </TableBody>
