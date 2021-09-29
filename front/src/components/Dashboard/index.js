@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
 // MUI IMPORTS
-import { styled, createTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
@@ -16,8 +17,6 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 
 // MUI ICONS IMPORTS
 import MenuIcon from '@mui/icons-material/Menu';
@@ -28,7 +27,6 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 // import Chart from './Chart';
 // import Deposits from './Deposits';
-import TournamentTable from './TournamentTable';
 import LoadingFullscreen from '../LoadingFullscreen';
 
 // Firebase Auth
@@ -83,9 +81,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const mdTheme = createTheme();
-
-function DashboardContent() {
+function DashboardContent({ children }) {
   // API user data
   const history = useHistory();
   const [user, loading] = useAuthState(auth);
@@ -100,8 +96,6 @@ function DashboardContent() {
     if (!user) {
       history.replace('/rf-admin');
     }
-
-    console.log(userData);
   }, [user, loading]);
 
   // State for the drawer
@@ -142,9 +136,13 @@ function DashboardContent() {
               Dashboard -
               {' '}
               {userData?.name}
+              {' '}
+              (
+              {userData?.club.name}
+              )
             </Typography>
             <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
+              <Badge badgeContent={2} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -181,24 +179,22 @@ function DashboardContent() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-
-              {/* Recent TournamentTable */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <TournamentTable title="Mes Tournois" />
-                </Paper>
-              </Grid>
-            </Grid>
+            {children}
           </Container>
         </Box>
       </Box>
     )
-
   );
 }
+DashboardContent.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
-export default function Dashboard() {
-  return <DashboardContent />;
+// SINGLE EXPORT, DASHBOARD
+function Dashboard({ children }) {
+  return <DashboardContent>{children}</DashboardContent>;
 }
+Dashboard.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+export default Dashboard;

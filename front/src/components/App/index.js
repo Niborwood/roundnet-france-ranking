@@ -23,7 +23,8 @@ import SignInError from '../SignInError';
 
 // DASHBOARD
 import Dashboard from '../Dashboard';
-import LoadingFullscreen from '../LoadingFullscreen';
+import DashboardHome from '../DashboardHome';
+import DashboardAddTournament from '../DashboardAddTournament';
 
 function App() {
   return (
@@ -69,14 +70,23 @@ function App() {
           </SignInWrapper>
         </Route>
 
-        {/* DASHBOARD */}
+        {/* DASHBOARD WRAPPER */}
         <Route exact path="/rf-dashboard">
-          <Dashboard />
+          <Dashboard>
+            <DashboardHome />
+          </Dashboard>
+        </Route>
+
+        {/* DASHBOARD ADD TOURNAMENT */}
+        <Route exact path="/rf-add-tournament">
+          <Dashboard>
+            <DashboardAddTournament />
+          </Dashboard>
         </Route>
 
         {/* TESTING */}
         <Route exact path="/testing">
-          <LoadingFullscreen />
+          {/* Testing */}
         </Route>
       </Switch>
     </div>

@@ -33,7 +33,6 @@ function SignInWrapper({ children, title }) {
             {title}
           </Typography>
           <Paper variant="outlined" sx={{ p: 4 }}>
-            {/* Children */}
             <FormControl fullWidth>
               <Stack direction="column" spacing={2}>
                 {children}

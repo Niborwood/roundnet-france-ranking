@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import { useQuery, gql } from '@apollo/client';
 
 function ClubInput({
-  values, setValues, errors, setErrors,
+  values, setValues, errors, setErrors, label,
 }) {
   // Controlled input and value
   const filter = createFilterOptions();
@@ -86,7 +86,8 @@ function ClubInput({
             error={errors.club !== ''}
             helperText={errors.club}
             {...params}
-            label="Club"
+            label={label}
+            required
           />
         )}
       />
@@ -95,6 +96,7 @@ function ClubInput({
 }
 
 ClubInput.propTypes = {
+  label: PropTypes.string,
   values: PropTypes.shape({
     club: PropTypes.string,
   }).isRequired,
@@ -103,6 +105,10 @@ ClubInput.propTypes = {
     club: PropTypes.string,
   }).isRequired,
   setErrors: PropTypes.func.isRequired,
+};
+
+ClubInput.defaultProps = {
+  label: 'Club',
 };
 
 export default ClubInput;

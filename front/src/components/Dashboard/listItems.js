@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 // MUI IMPORTS
 import ListItem from '@mui/material/ListItem';
@@ -20,12 +21,14 @@ import { userLogout } from '../../utils/firebase';
 export const mainListItems = (
   <div>
     <ListSubheader inset sx={{ display: { xs: 'none', md: 'inherit' } }}>Administration</ListSubheader>
-    <ListItem button>
+    <ListItem button component={Link} to="/rf-admin">
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
+
       <ListItemText primary="Dashboard" />
     </ListItem>
+
     <ListItem button>
       <ListItemIcon>
         <PeopleIcon />
@@ -50,7 +53,7 @@ export const mainListItems = (
 export const secondaryListItems = (
   <div>
     <ListSubheader inset sx={{ display: { xs: 'none', md: 'inherit' } }}>Compte</ListSubheader>
-    <ListItem button>
+    <ListItem button component={Link} to="/rf-settings">
       <ListItemIcon>
         <SettingsIcon />
       </ListItemIcon>

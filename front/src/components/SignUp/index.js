@@ -71,8 +71,7 @@ function SignUp() {
       // maybe trigger a loading screen
       return;
     }
-    console.log(user);
-    // if (user) history.replace('/rf-dashboard');
+    if (user) history.replace('/rf-dashboard');
   }, [user, loading, errorApollo, error]);
 
   // JSX RETURN
