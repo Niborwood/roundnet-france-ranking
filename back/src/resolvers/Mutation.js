@@ -47,6 +47,7 @@ async function login(parent, args, context, info) {
     throw new Error('Aucun utilisateur n\'a été trouvé')
   }
 
+
   // Checking if the UID/password is correct
   const valid = await bcrypt.compare(args.uid, user.uid);
   if (!valid) {
@@ -67,7 +68,14 @@ const createTournament = async (parent, args, context, info) => {
   // Checking if the user is logged in ; if not, throw an error
   const { userId } = context;
   if (!userId) {
-    throw new Error('Vous devez être connecté et autorisé pour créer un tournoi')
+    throw new Error('Vous devez être connecté pour créer un tournoi')
+  }
+
+  // Checking if user has permission to create a tournament
+  const { role } = await context.prisma.user.findUnique({ where: { uid: userId } });
+  const userIsReadOnly = role === 'READONLY';
+  if (userIsReadOnly) {
+    throw new Error('Vous n\'avez pas les droits pour obtenir ces informations');
   }
 
   // If logged in :
