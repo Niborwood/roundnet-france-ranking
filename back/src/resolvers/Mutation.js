@@ -72,10 +72,10 @@ const createTournament = async (parent, args, context, info) => {
   }
 
   // Checking if user has permission to create a tournament
-  const userIsReadonly = await context.prisma.user.findUnique({ where: { uid: userId } }).role.includes('READONLY');
-  console.log(isAuthorized);
-  if (userIsReadonly) {
-    throw new Error('Vous n\'avez pas les droits pour créer un tournoi')
+  const { role } = await context.prisma.user.findUnique({ where: { uid: userId } });
+  const userIsReadOnly = role === 'READONLY';
+  if (userIsReadOnly) {
+    throw new Error('Vous n\'avez pas les droits pour obtenir ces informations');
   }
 
   // If logged in :

@@ -4,6 +4,7 @@ type Query {
   ranking: [PlayerOnTournament!]!
   clubs: [Club!]!
   users: [User!]!
+  user: User!
 }
 
 # MODELS
