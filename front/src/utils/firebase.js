@@ -76,7 +76,7 @@ const signInWithGoogle = async (setErrors, errors) => {
 };
 
 // Try and sign in the user with email and password
-const signInLocal = async (setErrors, errors, values) => {
+const signInLocal = async (setErrors, errors, values, logIn) => {
   try {
     const { email, password } = values;
     let isValid = true;
@@ -92,7 +92,18 @@ const signInLocal = async (setErrors, errors, values) => {
 
     // If no errors, sign in
     if (isValid) {
-      await signInWithEmailAndPassword(auth, email, password);
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
+      // If user
+      if (user) {
+        logIn({
+          variables: {
+            loginEmail: email,
+            loginUid: user.uid,
+          },
+        });
+      } else {
+        throw new Error();
+      }
     }
   } catch (err) {
     // Handle Errors here
@@ -166,24 +177,21 @@ const registerLocal = async (setErrors, errors, values, signUp) => {
     }
 
     // If all is well, register the user (some errors might be thrown by Firebase)
-    let user;
     if (isValid) {
-      const { user: firebaseUser } = await createUserWithEmailAndPassword(auth, email, password);
-      user = firebaseUser;
-    }
-
-    // If user is created, add user to the API database
-    if (user) {
-      signUp({
-        variables: {
-          signupUid: user.uid,
-          signupEmail: email,
-          signupName: name,
-          signupClub: club,
-        },
-      });
-    } else {
-      throw new Error('api/error');
+      const { user } = await createUserWithEmailAndPassword(auth, email, password);
+      // If user is created, add user to the API database
+      if (user) {
+        signUp({
+          variables: {
+            signupUid: user.uid,
+            signupEmail: email,
+            signupName: name,
+            signupClub: club,
+          },
+        });
+      } else {
+        throw new Error('api/error');
+      }
     }
   } catch (err) {
     switch (err.code) {
@@ -267,6 +275,7 @@ const sendPasswordReset = async (setLoadMail, setEmailSent, setErrors, errors, e
 // Log Out the user
 const userLogout = () => {
   signOut(auth);
+  localStorage.clear();
 };
 
 // Export all functions

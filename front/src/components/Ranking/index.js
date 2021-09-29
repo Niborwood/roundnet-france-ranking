@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 
 // MUI IMPORTS
 import Container from '@mui/material/Container';

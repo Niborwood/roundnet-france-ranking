@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useMutation } from '@apollo/client';
 
 // MUI IMPORTS
 import Button from '@mui/material/Button';
@@ -21,23 +22,17 @@ import GoogleIcon from '@mui/icons-material/Google';
 // FIREBASE IMPORTS
 import { auth, signInLocal, signInWithGoogle } from '../../utils/firebase';
 
+// GQL IMPORT
+import { LOGIN_MUTATION } from '../../graphQl';
+
+// TOKEN IMPORT
+import AUTH_TOKEN from '../../constants';
+
+// ---- LOGIN FUNCTION ----
 function LogIn() {
   // Firebase Auth State & History Hooks
   const [user, loading, error] = useAuthState(auth);
   const history = useHistory();
-
-  useEffect(() => {
-    // If error, redirect to general error page
-    if (error) {
-      history.push('/rf-error');
-    }
-
-    if (loading) {
-      // maybe trigger a loading screen
-      return;
-    }
-    if (user) history.replace('/rf-dashboard');
-  }, [user, loading]);
 
   // Controlled inputs
   const [values, setValues] = useState({
@@ -54,6 +49,29 @@ function LogIn() {
     password: '',
   };
   const [errors, setErrors] = useState(initialErrors);
+
+  // login mutation setup and function
+  const [logIn, { error: errorApollo }] = useMutation(LOGIN_MUTATION, {
+    onCompleted: ({ login }) => {
+      localStorage.setItem(AUTH_TOKEN, login.token);
+      history.push('/rf-dashboard');
+    },
+  });
+
+  // Redirections and global errors
+  useEffect(() => {
+    // If error, redirect to general error page
+    if (error || errorApollo) {
+      history.push('/rf-error');
+    }
+
+    if (loading) {
+      // maybe trigger a loading screen
+      return;
+    }
+    // If user is logged in, redirect to dashboard
+    if (user) history.replace('/rf-dashboard');
+  }, [user, loading, errorApollo, error]);
 
   return (
     <>
@@ -121,7 +139,7 @@ function LogIn() {
       <Button
         type="submit"
         variant="contained"
-        onClick={() => signInLocal(setErrors, errors, values)}
+        onClick={() => signInLocal(setErrors, errors, values, logIn)}
       >
         Se connecter
       </Button>

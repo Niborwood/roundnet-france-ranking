@@ -23,6 +23,7 @@ import SignInError from '../SignInError';
 
 // DASHBOARD
 import Dashboard from '../Dashboard';
+import LoadingFullscreen from '../LoadingFullscreen';
 
 function App() {
   return (
@@ -71,6 +72,11 @@ function App() {
         {/* DASHBOARD */}
         <Route exact path="/rf-dashboard">
           <Dashboard />
+        </Route>
+
+        {/* TESTING */}
+        <Route exact path="/testing">
+          <LoadingFullscreen />
         </Route>
       </Switch>
     </div>
