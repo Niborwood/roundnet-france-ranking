@@ -1,10 +1,15 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
+
+// MUI IMPORTS
 import Link from '@mui/material/Link';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+
+// COMPONENTS IMPORS
 import Title from './Title';
 
 // Generate Order Data
@@ -54,10 +59,10 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function Orders() {
+function TournamentTable({ title, data }) {
   return (
     <>
-      <Title>Tournois récents</Title>
+      <Title>{title}</Title>
       <Table size="small">
         <TableHead>
           <TableRow>
@@ -86,3 +91,16 @@ export default function Orders() {
     </>
   );
 }
+
+TournamentTable.propTypes = {
+  title: PropTypes.string.isRequired,
+  data: PropTypes.shape({
+    name: PropTypes.string,
+    date: PropTypes.string,
+    place: PropTypes.string,
+    club: PropTypes.string,
+    participants: PropTypes.number,
+  }).isRequired,
+};
+
+export default TournamentTable;
