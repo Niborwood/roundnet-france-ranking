@@ -3,6 +3,7 @@ type Query {
   info: String!
   ranking: [PlayerOnTournament!]!
   clubs: [Club!]!
+  users: [User!]!
 }
 
 # MODELS

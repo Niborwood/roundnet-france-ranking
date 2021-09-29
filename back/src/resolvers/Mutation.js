@@ -67,10 +67,15 @@ async function login(parent, args, context, info) {
 const createTournament = async (parent, args, context, info) => {
   // Checking if the user is logged in ; if not, throw an error
   const { userId } = context;
-  const isAuthorized = await context.prisma.user.findUnique({ where: { uid: userId } }).role.includes('ADMIN');
-  console.log(isAuthorized);
   if (!userId) {
-    throw new Error('Vous devez être connecté et autorisé pour créer un tournoi')
+    throw new Error('Vous devez être connecté pour créer un tournoi')
+  }
+
+  // Checking if user has permission to create a tournament
+  const userIsReadonly = await context.prisma.user.findUnique({ where: { uid: userId } }).role.includes('READONLY');
+  console.log(isAuthorized);
+  if (userIsReadonly) {
+    throw new Error('Vous n\'avez pas les droits pour créer un tournoi')
   }
 
   // If logged in :

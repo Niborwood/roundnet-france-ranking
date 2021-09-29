@@ -45,8 +45,26 @@ const clubs = async (parent, args, context) => {
   return clubs;
 }
 
+const users = async (parent, args, context) => {
+  const { userId } = context;
+  if (!userId) {
+    throw new Error('Vous devez être connecté pour obtenir ces informations');
+  }
+
+  const { role: userRole } = await context.prisma.user.findUnique({ where: { uid: userId } });
+  const userIsSuperAdmin = userRole === 'SUPERADMIN';
+  if (!userIsSuperAdmin) {
+    throw new Error('Vous n\'avez pas les droits pour obtenir ces informations');
+  }
+
+  const users = await context.prisma.user.findMany();
+  return users;
+}
+
+
 module.exports = {
   info,
   ranking,
   clubs,
+  users,
 };
