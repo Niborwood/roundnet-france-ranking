@@ -29,7 +29,7 @@ function TournamentDetails({
   return (
     <Container maxWidth="xs" sx={{ pt: 4 }}>
       <Typography variant="h6" sx={{ mb: 1 }}>
-        Ajouter un tournoi
+        Créer un tournoi / Détails
       </Typography>
       <Paper sx={{ p: 4 }}>
         <FormControl fullWidth>
@@ -49,7 +49,7 @@ function TournamentDetails({
             />
 
             {/* DATE */}
-            <LocalizationProvider dateAdapter={DateAdapter} locale="fr">
+            <LocalizationProvider dateAdapter={DateAdapter} locale="frLocale">
               <DatePicker
                 disableFuture
                 label="Date"
@@ -57,10 +57,16 @@ function TournamentDetails({
                 views={['year', 'month', 'day']}
                 value={values.date}
                 onChange={(newValue) => {
-                  setValues({ ...values, date: newValue });
+                  setValues({ ...values, date: newValue?.format('L') });
                 }}
+                renderInput={(params) => (
+                  <TextField
                 // eslint-disable-next-line react/jsx-props-no-spreading
-                renderInput={(params) => <TextField {...params} />}
+                    {...params}
+                    error={errors.date !== ''}
+                    helperText={errors.date}
+                  />
+                )}
               />
             </LocalizationProvider>
 

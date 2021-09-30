@@ -35,6 +35,7 @@ function DashboardAddTournament() {
       : (
         <TournamentPlayers
           setDetailsStep={setDetailsStep}
+          participants={parseInt(values.participants, 10)}
         />
       )
   );

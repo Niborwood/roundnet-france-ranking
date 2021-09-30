@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 // MUI IMPORTS
@@ -13,56 +13,96 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import TextField from '@mui/material/TextField';
 
 // MUI ICONS IMPORTS
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
-const betterRows = [
-  {
-    rank: 1,
-    team: 'Equinox',
+// ---- TEAM ROW SUB-COMPONENT ----
+function EmptyRow({ rank, playersValues, setPlayersValues }) {
+  const initialValues = {
+    team: '',
     players: [
       {
-        name: 'Robin',
-        surname: 'Souriau',
+        name: '',
       },
       {
-        name: 'Alexandre',
-        surname: 'Marti',
+        name: '',
       },
     ],
-  },
-  {
-    rank: 2,
-    team: 'M&N',
-    players: [
-      {
-        name: 'Charles',
-        surname: 'Mordacq',
-      },
-      {
-        name: 'Benoit',
-        surname: 'Nguyen',
-      },
-    ],
-  },
-  {
-    rank: 3,
-    team: 'Pour Combien ?',
-    players: [
-      {
-        name: 'Dorian',
-        surname: 'Améziane',
-      },
-      {
-        name: 'Robin',
-        surname: 'Florinda',
-      },
-    ],
-  },
-];
+  };
 
-function TournamentPlayers({ setDetailsStep }) {
+  return (
+    <TableRow
+      hover
+      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+    >
+      <TableCell align="right" sx={{ maxWidth: '50px' }}>
+        {rank}
+      </TableCell>
+      <TableCell>
+        <TextField
+          label="Nom d'équipe"
+          id={`team-name-${rank}`}
+          variant="filled"
+          size="small"
+        />
+
+      </TableCell>
+      <TableCell>
+        <TextField
+          label="Prénom, nom"
+          id={`team-firstPlayer-${rank}`}
+          variant="filled"
+          size="small"
+        />
+
+      </TableCell>
+      <TableCell>
+        <TextField
+          label="Prénom, nom"
+          id={`team-secondPlayer-${rank}`}
+          variant="filled"
+          size="small"
+        />
+
+      </TableCell>
+    </TableRow>
+  );
+}
+
+EmptyRow.propTypes = {
+  rank: PropTypes.number.isRequired,
+  playersValues: PropTypes.arrayOf(PropTypes.shape({
+    teamName: PropTypes.string,
+    firstPlayer: PropTypes.string,
+    secondPlayer: PropTypes.string,
+  })).isRequired,
+  setPlayersValues: PropTypes.func.isRequired,
+};
+
+// ---- TOURNAMENT PLAYERS COMPONENT ----
+function TournamentPlayers({ setDetailsStep, participants }) {
+  // Handle the players values state
+  const [playersValues, setPlayersValues] = useState([]);
+
+  // Function to create as many empty rows as the number of participants
+  const createEmptyRows = (numberOfRows) => {
+    const rows = [];
+    for (let i = 0; i < numberOfRows; i += 1) {
+      const rank = i + 1;
+      rows.push(
+        <EmptyRow
+          key={rank}
+          rank={rank}
+          playersValues={playersValues}
+          setPlayersValues={setPlayersValues}
+        />,
+      );
+    }
+    return rows;
+  };
+
   return (
     <Container maxWidth="xl">
       <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems="flex-start" sx={{ mb: 1 }}>
@@ -85,35 +125,14 @@ function TournamentPlayers({ setDetailsStep }) {
         <Table size="small" aria-label="Joueurs à enregistrer" stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ maxWidth: '70px' }}>Rang</TableCell>
+              <TableCell align="right" sx={{ maxWidth: '50px' }}>Rang</TableCell>
               <TableCell align="left">Equipe</TableCell>
-              <TableCell>Joueurs</TableCell>
-              <TableCell />
+              <TableCell>Joueur 1</TableCell>
+              <TableCell>Joueur 2</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {betterRows.map((row) => (
-
-              <TableRow
-                hover
-                key={row.rank}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row" sx={{ maxWidth: '70px' }}>
-                  {row.rank}
-                </TableCell>
-                <TableCell>{row.team}</TableCell>
-                {row.players.map((player) => (
-                  <>
-                    <TableCell key={player.name}>
-                      {player.name}
-                      {' '}
-                      {player.surname}
-                    </TableCell>
-                  </>
-                ))}
-              </TableRow>
-            ))}
+            {createEmptyRows(participants).map((row) => row)}
           </TableBody>
         </Table>
       </TableContainer>
@@ -123,6 +142,7 @@ function TournamentPlayers({ setDetailsStep }) {
 
 TournamentPlayers.propTypes = {
   setDetailsStep: PropTypes.func.isRequired,
+  participants: PropTypes.number.isRequired,
 };
 
 export default TournamentPlayers;
