@@ -14,6 +14,7 @@ function DashboardAddTournament() {
     place: '',
     club: '',
     participants: '',
+    date: '',
   };
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState(initialValues);

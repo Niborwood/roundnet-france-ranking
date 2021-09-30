@@ -11,6 +11,9 @@ import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import DatePicker from '@mui/lab/DatePicker';
+import DateAdapter from '@mui/lab/AdapterMoment';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
 // COMPOSANTS IMPORTS
 import ClubInput from '../ClubInput';
@@ -44,6 +47,22 @@ function TournamentDetails({
                 setErrors({ ...errors, name: '' });
               }}
             />
+
+            {/* DATE */}
+            <LocalizationProvider dateAdapter={DateAdapter} locale="fr">
+              <DatePicker
+                disableFuture
+                label="Date"
+                openTo="day"
+                views={['year', 'month', 'day']}
+                value={values.date}
+                onChange={(newValue) => {
+                  setValues({ ...values, date: newValue });
+                }}
+                // eslint-disable-next-line react/jsx-props-no-spreading
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
 
             {/* PLACE */}
             <TextField
@@ -116,19 +135,22 @@ TournamentDetails.propTypes = {
     name: PropTypes.string,
     place: PropTypes.string,
     club: PropTypes.string,
-    participants: PropTypes.number,
+    date: PropTypes.string,
+    participants: PropTypes.string,
   }).isRequired,
   errors: PropTypes.shape({
     name: PropTypes.string,
     place: PropTypes.string,
     club: PropTypes.string,
-    participants: PropTypes.number,
+    date: PropTypes.string,
+    participants: PropTypes.string,
   }).isRequired,
   initialValues: PropTypes.shape({
     name: PropTypes.string,
     place: PropTypes.string,
     club: PropTypes.string,
-    participants: PropTypes.number,
+    date: PropTypes.string,
+    participants: PropTypes.string,
   }).isRequired,
   setValues: PropTypes.func.isRequired,
   setErrors: PropTypes.func.isRequired,
