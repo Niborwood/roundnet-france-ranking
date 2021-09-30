@@ -46,6 +46,16 @@ function EmptyRow({ rank, playersValues, setPlayersValues }) {
           id={`team-name-${rank}`}
           variant="filled"
           size="small"
+          value={playersValues[rank]?.teamName}
+          onChange={(newValue) => {
+            setPlayersValues({
+              ...playersValues,
+              [rank]: {
+                ...playersValues[rank],
+                teamName: newValue.target.value,
+              },
+            });
+          }}
         />
 
       </TableCell>
@@ -82,10 +92,9 @@ EmptyRow.propTypes = {
 };
 
 // ---- TOURNAMENT PLAYERS COMPONENT ----
-function TournamentPlayers({ setDetailsStep, participants }) {
-  // Handle the players values state
-  const [playersValues, setPlayersValues] = useState([]);
-
+function TournamentPlayers({
+  setDetailsStep, participants, playersValues, setPlayersValues,
+}) {
   // Function to create as many empty rows as the number of participants
   const createEmptyRows = (numberOfRows) => {
     const rows = [];
@@ -143,6 +152,12 @@ function TournamentPlayers({ setDetailsStep, participants }) {
 TournamentPlayers.propTypes = {
   setDetailsStep: PropTypes.func.isRequired,
   participants: PropTypes.number.isRequired,
+  playersValues: PropTypes.arrayOf(PropTypes.shape({
+    teamName: PropTypes.string,
+    firstPlayer: PropTypes.string,
+    secondPlayer: PropTypes.string,
+  })).isRequired,
+  setPlayersValues: PropTypes.func.isRequired,
 };
 
 export default TournamentPlayers;

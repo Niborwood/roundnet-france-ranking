@@ -18,6 +18,7 @@ function DashboardAddTournament() {
   };
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState(initialValues);
+  const [playersValues, setPlayersValues] = useState([]);
 
   // FUNCTION RETURN
   return (
@@ -35,6 +36,8 @@ function DashboardAddTournament() {
       : (
         <TournamentPlayers
           setDetailsStep={setDetailsStep}
+          playersValues={playersValues}
+          setPlayersValues={setPlayersValues}
           participants={parseInt(values.participants, 10)}
         />
       )
