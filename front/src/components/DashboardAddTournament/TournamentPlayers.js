@@ -47,7 +47,7 @@ function EmptyRow({ rank, playersValues, setPlayersValues }) {
           variant="filled"
           size="small"
           value={playersValues[rank]?.teamName}
-          onChange={(newValue) => {
+          onBlur={(newValue) => {
             setPlayersValues({
               ...playersValues,
               [rank]: {
